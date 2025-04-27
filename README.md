@@ -1,37 +1,72 @@
 # 🌍 PatriGod FrontEnd
 
-Este proyecto contiene el **fronted** de la aplicación web **PatriGod**.
+Este repositorio contiene el **Frontend** de la aplicación web **PatriGod**.
 
 ---
 
 ## 📚 Índice
 
-1. [Creacion del proyecto](#creacion-del-proyecto)
-2. [Autor](#autor)
-
+1. [Creación del proyecto](#creación-del-proyecto)
+2. [Estructura del proyecto](#estructura-del-proyecto)
+3. [Configuración de rutas](#configuración-de-rutas)
+4. [Librerías utilizadas](#librerías-utilizadas)
+5. [Autor](#autor)
 
 ---
 
-## Creacion del proyecto
-Proyecto creado con Vite 
+## Creación del proyecto
+
+El proyecto fue creado utilizando **Vite**: 📁
 
 ```bash
 npm create vite@latest patrigod_front
 ```
 
-He dejado el proyecto desde 0 y ya he empezado a programar.
-Carpetas:
-- componentes
-- contexto
-- paginas
-- servicios
-Primero voy a crear toda las carpetas de mi proyecto y luego creare las rutas y todo en general y a partir de ahi, poco a poco pues le dare caña.
+Inicialmente se ha dejado el proyecto desde cero para construir la aplicación de forma estructurada y organizada.
+
+---
+
+## Estructura del proyecto
+
+Se han creado las siguientes carpetas 🗂️ principales para organizar el código:
+
+- `componentes/` → Componentes reutilizables de la interfaz.
+- `contexto/` → Gestión del estado global mediante contextos.
+- `paginas/` → Páginas principales de la aplicación.
+- `servicios/` → Servicios para conexión con APIs u otras funciones externas.
+
+El primer paso ha sido crear toda la estructura base. A partir de aquí, se irá desarrollando el proyecto progresivamente.
+
+---
+
+##  Configuración de rutas
+
+Para la navegación entre páginas se utiliza **React Router DOM**:
 
 ```bash
-npm i react-router-dom
+npm install react-router-dom
 ```
-Y en el App.jsx voy a programar todas las rutas.
 
+La configuración de las rutas se realiza en el archivo `App.jsx`.
 
-## Autor 
-Realizado por Alejandro Copado López
+---
+
+##  Librerías utilizadas
+
+### Material UI
+
+Para el diseño visual empleare **Material UI**:
+
+```bash
+npm install @mui/material @emotion/react @emotion/styled
+```
+
+Material UI proporciona una amplia colección de componentes estilizados listos para usar y altamente personalizables.
+
+---
+
+##  Autor
+
+Proyecto realizado por **Alejandro Copado López**.  
+
+---
