@@ -63,6 +63,16 @@ npm install @mui/material @emotion/react @emotion/styled
 
 Material UI proporciona una amplia colección de componentes estilizados listos para usar y altamente personalizables.
 
+### LeafLeft
+
+Una de las librerias que voy a utilizar va a ser esta para poder visualizar mapas en la interfaz.
+
+Instalación:
+```bash
+npm install react@rc react-dom@rc leaflet
+
+npm install react-leaflet@next
+```
 ---
 
 ##  Autor

@@ -1,0 +1,20 @@
+/* MapaCiudades.css */
+.map-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    background: linear-gradient(to right, #e0eafc, #cfdef3);
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  
+  .leaflet-map {
+    height: 80vh;
+    width: 90vw;
+    max-width: 1200px;
+    border: 3px solid #1976d2;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
