@@ -1,53 +1,80 @@
+// src/componentes/MapaCiudades/MapaCiudades.jsx
+import React, { useState, useEffect } from 'react';
+import { Box, Paper, Typography, Button, CircularProgress } from '@mui/material';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Link } from 'react-router-dom';
 import 'leaflet/dist/leaflet.css';
-import './MapaCiudades.css';
 
 const MapaCiudades = () => {
-  // Ajustamos el centro a España, pero con un zoom más cercano
-  const spainCenter = [40.4168, -3.7038]; // Centro de Madrid, España
-  const zoomLevel = 7; // Aumento el zoom para que se vea más de cerca
+  const [ciudades, setCiudades] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const center = [40.4168, -3.7038]; // Madrid
 
-  const ciudades = [
-    { nombre: 'Alcalá de Henares', coords: [40.4810, -3.3635] },
-    { nombre: 'Ávila', coords: [40.6565, -4.6818] },
-    { nombre: 'Baeza', coords: [37.9937, -3.4715] },
-    { nombre: 'Cáceres', coords: [39.4752, -6.3720] },
-    { nombre: 'Córdoba', coords: [37.8882, -4.7794] },
-    { nombre: 'Cuenca', coords: [40.0704, -2.1374] },
-    { nombre: 'Ibiza (Eivissa)', coords: [38.9089, 1.4321] },
-    { nombre: 'Mérida', coords: [38.9170, -6.3400] },
-    { nombre: 'Salamanca', coords: [40.9701, -5.6635] },
-    { nombre: 'San Cristóbal de La Laguna', coords: [28.4853, -16.3160] },
-    { nombre: 'Santiago de Compostela', coords: [42.8805, -8.5457] },
-    { nombre: 'Segovia', coords: [40.9429, -4.1088] },
-    { nombre: 'Tarragona', coords: [41.1189, 1.2445] },
-    { nombre: 'Toledo', coords: [39.8628, -4.0273] },
-    { nombre: 'Úbeda', coords: [38.0114, -3.3731] },
-  ];
+  useEffect(() => {
+    fetch('http://localhost:8080/api/ciudad')
+      .then(res => res.json())
+      .then(data => {
+        // Convertimos la respuesta a un array que Leaflet entienda:
+        const lista = data.map(c => ({
+          id: c.id,
+          nombre: c.nombre,
+          coords: [c.latitud, c.longitud]
+        }));
+        setCiudades(lista);
+      })
+      .catch(err => console.error('Error fetching ciudades:', err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
-    <div className="map-container">
+    <Paper
+      elevation={8}
+      sx={{
+        borderRadius: 4,
+        overflow: 'hidden',
+        height: '70vh',
+        width: '100%',
+      }}
+    >
       <MapContainer
-        center={spainCenter}
-        zoom={zoomLevel}
-        className="leaflet-map"
-        scrollWheelZoom={false}  // deshabilita el zoom con la rueda del ratón
-        dragging={true}          // deshabilita el movimiento del mapa
+        center={center}
+        zoom={7}
+        style={{ height: '100%', width: '100%' }}
+        scrollWheelZoom={false}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          attribution="&copy; OpenStreetMap contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        {ciudades.map((ciudad, index) => (
-          <Marker key={index} position={ciudad.coords}>
+        {ciudades.map(({ id, nombre, coords }) => (
+          <Marker key={id} position={coords}>
             <Popup>
-              {ciudad.nombre}, Ciudad Patrimonio de la Humanidad.
+              <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
+                {nombre}
+              </Typography>
+              <Button
+                component={Link}
+                to={`/ciudad/${id}`}
+                size="small"
+                variant="outlined"
+                sx={{ mt: 1 }}
+              >
+                Ver detalles
+              </Button>
             </Popup>
           </Marker>
         ))}
       </MapContainer>
-    </div>
+    </Paper>
   );
-}
+};
 
 export default MapaCiudades;

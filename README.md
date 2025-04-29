@@ -75,6 +75,18 @@ npm install react-leaflet@next
 ```
 ---
 
+## Programando componentes
+
+- Header.jsx
+- Footer.jsx
+- Layout.jsx
+- MapaCiudades
+- Acerca.jsx
+
+Paginas:
+- AcercaPage.jsx
+- HomePage.jsx
+
 ##  Autor
 
 Proyecto realizado por **Alejandro Copado López**.  

@@ -1,7 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
 import Layout from './componentes/Layout/Layout'
-import HomePage from './paginas/HomePage/HomePage'
+import HomePage from './paginas/HomePage'
+import AcercaPage from './paginas/AcercaPage'
 
 const router = createBrowserRouter([
   {
@@ -13,7 +14,7 @@ const router = createBrowserRouter([
             element:<HomePage/>,
           },
           {
-            path:"ciudad",
+            path:`ciudad/:id`,
             element:<p>Ciudad</p>,
           },
           {
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
           },
           {
             path:"acerca",
-            element:<p>Informacion</p>,
+            element:<AcercaPage/>,
           },
           {
             path:"datos_usuario",
