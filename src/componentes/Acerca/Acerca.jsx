@@ -1,55 +1,96 @@
-import React from 'react';
-import { Box, Container, Grid, Typography, Avatar, Card, CardContent, Button, Stack, Divider } from '@mui/material';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Avatar,
+  Card,
+  CardContent,
+  Button,
+  Stack,
+  Divider,
+  TextField,
+  InputAdornment
+} from '@mui/material';
+import { MailOutline, Language, Public } from '@mui/icons-material';
 
 const valores = [
-  { title: 'Visión', description: 'Crear una comunidad global apasionada por el patrimonio cultural.' },
-  { title: 'Misión', description: 'Facilitar el descubrimiento y la valoración de lugares históricos.' },
-  { title: 'Equipo', description: 'Un grupo de desarrolladores y diseñadores dedicados.' }
+  {
+    title: 'Visión',
+    description: 'Ser la referencia global en patrimonio cultural interactivo.',
+    icon: <Public fontSize="large" color="primary" />
+  },
+  {
+    title: 'Misión',
+    description: 'Inspirar y conectar a la comunidad con la historia viva.',
+    icon: <Language fontSize="large" color="secondary" />
+  },
+  {
+    title: 'Equipo',
+    description: 'Apasionados líderes en tecnología y cultura.',
+    icon: <Avatar sx={{ bgcolor: 'primary.main' }}>👥</Avatar>
+  },
+  {
+    title: 'Calidad de Datos',
+    description: 'Información veraz y siempre actualizada de cada ciudad y monumento.',
+    icon: <Avatar sx={{ bgcolor: 'success.main' }}>📊</Avatar>
+  },
+  {
+    title: 'Interactividad',
+    description: 'Mapas y filtros personalizables para una experiencia única.',
+    icon: <Avatar sx={{ bgcolor: 'info.main' }}>🗺️</Avatar>
+  },
+  {
+    title: 'Sostenibilidad',
+    description: 'Consejos de turismo responsable para cuidar el patrimonio.',
+    icon: <Avatar sx={{ bgcolor: 'warning.main' }}>🌿</Avatar>
+  }
+];
+
+
+const miembros = [
+  { name: 'Alejandro Copado López', role: 'Full Stack Developer', avatar: '/images/team/alejandro.jpg' }
 ];
 
 const Acerca = () => {
+  const [email, setEmail] = useState('');
+
+  const handleSubscribe = () => {
+    console.log('Suscrito:', email);
+    setEmail('');
+  };
+
   return (
-    <Box component="section" sx={{
-      background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
-      py: { xs: 6, md: 12 }
-    }}>
+    <Box component="section" sx={{ background: 'linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%)', py: { xs: 8, md: 4 } }}>
       <Container maxWidth="lg">
-        {/* Hero Title */}
         <Box textAlign="center" mb={6}>
-          <Typography variant="h3" component="h2" gutterBottom sx={{ fontWeight: 700 }}>
+          <Typography variant="h3" component="h2" gutterBottom sx={{ fontWeight: 800 }}>
             Acerca de <Box component="span" color="primary.main">PatriGod</Box>
           </Typography>
-          <Typography variant="h6" color="text.secondary">
-            Tu guía interactiva para explorar y valorar el Patrimonio de la Humanidad en España.
+          <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 600, mx: 'auto' }}>
+            Nuestra plataforma global que redefine cómo exploramos, valoramos y preservamos el Patrimonio de la Humanidad.
           </Typography>
         </Box>
 
-        {/* Valores */}
-        <Grid container spacing={4} mb={8}>
+        {/* Valores Profesionales con centrado inteligente */}
+        <Grid container spacing={1} mb={8} justifyContent="center">
           {valores.map((item) => (
-            <Grid item key={item.title} xs={12} sm={6} md={4}>
-              <Card sx={{
-                height: '100%',
-                p: 3,
-                boxShadow: 4,
-                borderRadius: 3,
-                transition: 'transform 0.3s',
-                '&:hover': { transform: 'translateY(-8px)' }
-              }}>
+            <Grid
+              item
+              key={item.title}
+              xs={12}
+              sm={6}
+              md={4}
+              sx={{ display: 'flex', justifyContent: 'center' }}
+            >
+              <Card sx={{ width: 300, p: 4, boxShadow: 6, borderRadius: 4, '&:hover': { boxShadow: 10, transform: 'translateY(-6px)', transition: '0.3s' } }}>
                 <CardContent sx={{ textAlign: 'center' }}>
-                  <Avatar sx={{
-                    bgcolor: 'primary.main',
-                    width: 56,
-                    height: 56,
-                    mb: 2
-                  }}>
-                    {item.title.charAt(0)}
-                  </Avatar>
-                  <Typography variant="h5" gutterBottom>
+                  <Box mb={2}>{item.icon}</Box>
+                  <Typography variant="h5" gutterBottom sx={{ fontWeight: 700 }}>
                     {item.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body1" color="text.secondary">
                     {item.description}
                   </Typography>
                 </CardContent>
@@ -60,40 +101,61 @@ const Acerca = () => {
 
         <Divider sx={{ bgcolor: 'grey.300', mb: 8 }} />
 
-        {/* Call to Action */}
-        <Stack alignItems="center" spacing={2} mb={6}>
-          <Typography variant="h4" gutterBottom>
-            ¿Listo para descubrir tu próxima aventura?
+        {/* Call to Action + Newsletter */}
+        <Stack alignItems="center" spacing={3} mb={10}>
+          <Typography variant="h4" gutterBottom sx={{ fontWeight: 600 }}>
+            ¡Lanzamiento Global! Únete a la comunidad.
           </Typography>
-          <Button variant="contained" size="large" sx={{ px: 4, py: 1.5, fontWeight: 600 }}> <Link to={"/"}>Explorar Ciudades</Link> </Button>
+          <Typography variant="subtitle1" color="text.secondary" sx={{ maxWidth: 600, textAlign: 'center' }}>
+            Suscríbete para recibir actualizaciones exclusivas y explorar primero nuestras futuras funcionalidades.
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', justifyContent: 'center' }}>
+            <TextField
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Tu correo electrónico"
+              variant="outlined"
+              sx={{ width: { xs: '100%', sm: 300 } }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <MailOutline />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <Button variant="contained" size="large" onClick={handleSubscribe} sx={{ px: 4 }}>
+              Suscribirse
+            </Button>
+          </Box>
         </Stack>
 
-        {/* Equipo (Testimonios) */}
+        <Divider sx={{ bgcolor: 'grey.300', mb: 8 }} />
+
+        {/* Equipo Global */}
         <Box textAlign="center">
-          <Typography variant="h4" component="h3" gutterBottom>
-            Nuestro Equipo
+          <Typography variant="h4" component="h3" gutterBottom sx={{ fontWeight: 700 }}>
+            Nuestro Equipo Global
           </Typography>
-          <Box mt={4}>
-            <Grid container spacing={4} justifyContent="center">
-              {['Alejandro'].map((name) => (
-                <Grid key={name} item xs={6} sm={4} md={2}>
-                  <Box textAlign="center">
-                    <Avatar
-                      sx={{ width: 80, height: 80, m: 'auto', mb: 1 }}
-                      alt={name}
-                      src={`/images/team/${name.toLowerCase()}.jpg`}
-                    />
-                    <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
-                      {name}
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                      Desarrollador Full Stack
-                    </Typography>
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
+          <Grid container spacing={4} justifyContent="center" mt={4}>
+            {miembros.map((member) => (
+              <Grid key={member.name} item xs={6} sm={4} md={2}>
+                <Box textAlign="center">
+                  <Avatar
+                    sx={{ width: 80, height: 80, m: 'auto', mb: 1 }}
+                    alt={member.name}
+                    src={member.avatar}
+                  />
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                    {member.name}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    {member.role}
+                  </Typography>
+                </Box>
+              </Grid>
+            ))}
+          </Grid>
         </Box>
       </Container>
     </Box>

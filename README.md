@@ -10,7 +10,8 @@ Este repositorio contiene el **Frontend** de la aplicación web **PatriGod**.
 2. [Estructura del proyecto](#estructura-del-proyecto)
 3. [Configuración de rutas](#configuración-de-rutas)
 4. [Librerías utilizadas](#librerías-utilizadas)
-5. [Autor](#autor)
+5. [Desarrollando el Front](#desarrollando-el-front)
+6. [Autor](#autor)
 
 ---
 
@@ -51,41 +52,51 @@ La configuración de las rutas se realiza en el archivo `App.jsx`.
 
 ---
 
-##  Librerías utilizadas
+## Librerías utilizadas
 
-### Material UI
+###  Material UI 🧰
 
-Para el diseño visual empleare **Material UI**:
-
+Para diseño y componentes estilizados:
 ```bash
-npm install @mui/material @emotion/react @emotion/styled
+npm install @mui/material @emotion/react @emotion/styled @mui/icons-material
 ```
 
-Material UI proporciona una amplia colección de componentes estilizados listos para usar y altamente personalizables.
+Material UI ofrece componentes listos para producción y theming flexible.
 
-### LeafLeft
+### 2. React Leaflet + Leaflet
 
-Una de las librerias que voy a utilizar va a ser esta para poder visualizar mapas en la interfaz.
-
-Instalación:
+Visualización de mapas:
 ```bash
-npm install react@rc react-dom@rc leaflet
-
-npm install react-leaflet@next
+npm install leaflet react-leaflet@next
 ```
+
++ **leaflet**: motor de mapas.
++ **react-leaflet**: integración con React.
+
+> **Importante**: En `src/main.jsx` importa `import 'leaflet/dist/leaflet.css';` antes de renderizar.
+
 ---
 
-## Programando componentes
+## Desarrollando el Front
 
-- Header.jsx
-- Footer.jsx
-- Layout.jsx
-- MapaCiudades
-- Acerca.jsx
+### 📂 Componentes
 
-Paginas:
-- AcercaPage.jsx
-- HomePage.jsx
+- **Header.jsx**: barra de navegación principal.
+- **Footer.jsx**: pie de página profesional con enlaces y redes sociales.
+- **Layout.jsx**: contenedor común para header, footer y contenido.
+- **MapaCiudades.jsx**: componente de mapa interactivo con marcadores y popups.
+- **Ciudad.jsx**: ficha detallada de una ciudad (API `/api/ciudad/:id`).
+- **Acerca.jsx**: sección “Acerca de” con valores, equipo y newsletter.
+
+### 📄 Páginas (Pages)
+
+- **HomePage.jsx**: portada con hero, CTA y preview de mapa.
+- **AcercaPage.jsx**: página completa “Acerca de PatriGod”.
+- **LoginPage.jsx**: formulario de autenticación.
+- **CiudadPage.jsx**: wrapper para `Ciudad.jsx` que obtiene ID de la URL.
+
+---
+
 
 ##  Autor
 

@@ -3,6 +3,8 @@ import './App.css'
 import Layout from './componentes/Layout/Layout'
 import HomePage from './paginas/HomePage'
 import AcercaPage from './paginas/AcercaPage'
+import LoginPage from './paginas/LoginPage'
+import CiudadPage from './paginas/CiudadPage'
 
 const router = createBrowserRouter([
   {
@@ -15,7 +17,7 @@ const router = createBrowserRouter([
           },
           {
             path:`ciudad/:id`,
-            element:<p>Ciudad</p>,
+            element:<CiudadPage></CiudadPage>,
           },
           {
             path:"ciudad/numero/comidas",
@@ -51,11 +53,15 @@ const router = createBrowserRouter([
           },
           {
             path:"/login",
-            element:<p>Login</p>,
+            element:<LoginPage/>,
           },
           {
             path:"/logout",
             element:<p>Logout</p>,
+          },
+          {
+            path:"/ranking",
+            element:<p>Ranking</p>,
           }
         ]
   }

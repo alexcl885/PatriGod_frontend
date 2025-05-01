@@ -32,7 +32,7 @@ const Header = () => {
         <Box sx={{ display: 'flex', gap: 3 }}>
           <Button 
             component={Link} 
-            to="/ciudad" 
+            to="/ranking" 
             color="inherit" 
             sx={{
               fontWeight: 'bold', 
