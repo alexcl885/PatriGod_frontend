@@ -5,6 +5,9 @@ import HomePage from './paginas/HomePage'
 import AcercaPage from './paginas/AcercaPage'
 import LoginPage from './paginas/LoginPage'
 import CiudadPage from './paginas/CiudadPage'
+import MonumentosCiudadPage from './paginas/MonumentosCiudadPage'
+import ComidasCiudadPage from './paginas/ComidasCiudadPage'
+import EventosCiudadPage from './paginas/EventosCiudadPage'
 
 const router = createBrowserRouter([
   {
@@ -20,24 +23,24 @@ const router = createBrowserRouter([
             element:<CiudadPage></CiudadPage>,
           },
           {
-            path:"ciudad/numero/comidas",
-            element:<p>Comidas</p>,
+            path:"ciudad/:id/comidas",
+            element:<ComidasCiudadPage></ComidasCiudadPage>,
           },
           {
             path:"ciudad/numero/comidas/numero",
             element:<p>Comida</p>,
           },
           {
-            path:"ciudad/numero/monumentos",
-            element:<p>Monumentos</p>,
+            path:"ciudad/:id/monumentos",
+            element:<MonumentosCiudadPage></MonumentosCiudadPage>,
           },
           {
-            path:"ciudad/numero/monumentos/numero",
+            path:"ciudad/:id/monumentos/numero",
             element:<p>Monumento</p>,
           },
           {
-            path:"ciudad/numero/eventos",
-            element:<p>Eventos</p>,
+            path:"ciudad/:id/eventos",
+            element:<EventosCiudadPage></EventosCiudadPage>,
           },
           {
             path:"ciudad/numero/eventos/numero",

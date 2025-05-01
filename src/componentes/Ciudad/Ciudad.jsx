@@ -55,7 +55,7 @@ const Ciudad = () => {
   }
 
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
+    <Container maxWidth="md" colo sx={{ py: 4 }}>
       <Card sx={{ borderRadius: 4, overflow: 'hidden', boxShadow: 4 }}>
         <CardMedia
           component="img"

@@ -87,13 +87,19 @@ npm install leaflet react-leaflet@next
 - **MapaCiudades.jsx**: componente de mapa interactivo con marcadores y popups.
 - **Ciudad.jsx**: ficha detallada de una ciudad (API `/api/ciudad/:id`).
 - **Acerca.jsx**: sección “Acerca de” con valores, equipo y newsletter.
-
+- **Articulos**: tres tipos de secciones que nos podemos encontrar por ciudad.
+- **MonumentosCiudad**: monumentos que existen en una ciudad.
+- **EventosCiudad**: eventos que existen en una ciudad.
+- **ComidasCiudad**: comidas que existen en una ciudad.
 ### 📄 Páginas (Pages)
 
 - **HomePage.jsx**: portada con hero, CTA y preview de mapa.
 - **AcercaPage.jsx**: página completa “Acerca de PatriGod”.
 - **LoginPage.jsx**: formulario de autenticación.
 - **CiudadPage.jsx**: wrapper para `Ciudad.jsx` que obtiene ID de la URL.
+- **MonumentosCiudadPage**: monumentos que existen en una ciudad.
+- **EventosCiudadPage**: eventos que existen en una ciudad.
+- **ComidasCiudadPage**: comidas que existen en una ciudad.
 
 ---
 
