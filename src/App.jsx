@@ -8,6 +8,9 @@ import CiudadPage from './paginas/CiudadPage'
 import MonumentosCiudadPage from './paginas/MonumentosCiudadPage'
 import ComidasCiudadPage from './paginas/ComidasCiudadPage'
 import EventosCiudadPage from './paginas/EventosCiudadPage'
+import ComidaPage from './paginas/ComidaPage'
+import MonumentoPage from './paginas/MonumentoPage'
+import EventoPage from './paginas/EventoPage'
 
 const router = createBrowserRouter([
   {
@@ -20,31 +23,31 @@ const router = createBrowserRouter([
           },
           {
             path:`ciudad/:id`,
-            element:<CiudadPage></CiudadPage>,
+            element:<CiudadPage/>,
           },
           {
             path:"ciudad/:id/comidas",
-            element:<ComidasCiudadPage></ComidasCiudadPage>,
+            element:<ComidasCiudadPage/>,
           },
           {
-            path:"ciudad/numero/comidas/numero",
-            element:<p>Comida</p>,
+            path:"ciudad/:id/comidas/:idComida",
+            element:<ComidaPage></ComidaPage>,
           },
           {
             path:"ciudad/:id/monumentos",
-            element:<MonumentosCiudadPage></MonumentosCiudadPage>,
+            element:<MonumentosCiudadPage/>,
           },
           {
-            path:"ciudad/:id/monumentos/numero",
-            element:<p>Monumento</p>,
+            path:"ciudad/:id/monumentos/:idMonumento",
+            element:<MonumentoPage/>,
           },
           {
             path:"ciudad/:id/eventos",
-            element:<EventosCiudadPage></EventosCiudadPage>,
+            element:<EventosCiudadPage/>,
           },
           {
-            path:"ciudad/numero/eventos/numero",
-            element:<p>Comida</p>,
+            path:"ciudad/:id/eventos/:idEvento",
+            element:<EventoPage></EventoPage>,
           },
           {
             path:"acerca",

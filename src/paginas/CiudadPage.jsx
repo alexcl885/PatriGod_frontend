@@ -5,6 +5,7 @@ import Ciudad from '../componentes/Ciudad/Ciudad';
 
 const CiudadPage = () => {
   return (
+    
     <Box component="main" sx={{ backgroundColor: '#0a192f', minHeight: '100vh' }}>
       {/* Detalle de Ciudad con sombra y margen */}
       <Container maxWidth="md" sx={{ py: 8 }}>

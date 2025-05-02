@@ -8,7 +8,7 @@ import {
   Typography,
   Button
 } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 const MonumentosCiudad = ({ monumentos }) => {
   
@@ -42,9 +42,10 @@ const MonumentosCiudad = ({ monumentos }) => {
             <CardActions>
               <Button
                 size="small"
-                href={`http://localhost:5173/ciudad/${monumento.ciudad.id}/monumento/${monumento.id}`}
               >
+                <Link to={`http://localhost:5173/ciudad/${monumento.ciudad.id}/monumentos/${monumento.id}`}>
                 Ver más
+                </Link>
               </Button>
             </CardActions>
           </Card>

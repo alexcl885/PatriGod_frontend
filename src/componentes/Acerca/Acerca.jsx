@@ -50,7 +50,7 @@ const valores = [
 
 
 const miembros = [
-  { name: 'Alejandro Copado López', role: 'Full Stack Developer', avatar: '/images/team/alejandro.jpg' }
+  { name: 'Alejandro Copado López', role: 'Full Stack Developer', avatar: 'src/imagenes/alejandro.png' }
 ];
 
 const Acerca = () => {

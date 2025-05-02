@@ -8,6 +8,7 @@ import {
   Typography,
   Button
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const ComidasCiudad = ({ comidas }) => {
   if (!comidas || comidas.length === 0) {
@@ -43,9 +44,10 @@ const ComidasCiudad = ({ comidas }) => {
             <CardActions>
               <Button
                 size="small"
-                href={`http://localhost:5173/ciudad/${comida.ciudad.id}/comida/${comida.id}`}
               >
+                <Link to={`http://localhost:5173/ciudad/${comida.ciudad.id}/comidas/${comida.id}`}>
                 Ver más
+                </Link>
               </Button>
             </CardActions>
           </Card>

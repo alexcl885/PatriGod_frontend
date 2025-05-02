@@ -8,6 +8,7 @@ import {
   Typography,
   Button
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const EventosCiudad = ({ eventos }) => {
   if (!eventos || eventos.length === 0) {
@@ -46,9 +47,10 @@ const EventosCiudad = ({ eventos }) => {
             <CardActions>
               <Button
                 size="small"
-                href={`http://localhost:5173/ciudad/${evento.ciudad.id}/evento/${evento.id}`}
               >
+                <Link to={`http://localhost:5173/ciudad/${evento.ciudad.id}/eventos/${evento.id}`}>
                 Ver más
+                </Link>
               </Button>
             </CardActions>
           </Card>
