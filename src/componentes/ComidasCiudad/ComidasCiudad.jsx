@@ -27,7 +27,7 @@ const ComidasCiudad = ({ comidas }) => {
             <CardMedia
               component="img"
               height="180"
-              image={`/assets/comidas/${comida.imagen}`} // Asegúrate de que esta ruta coincida con donde guardas las imágenes
+              image={comida.imagen} // Asegúrate de que esta ruta coincida con donde guardas las imágenes
               alt={comida.nombre}
             />
             <CardContent sx={{ flexGrow: 1 }}>

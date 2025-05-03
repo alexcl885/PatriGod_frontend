@@ -27,7 +27,7 @@ const EventosCiudad = ({ eventos }) => {
             <CardMedia
               component="img"
               height="180"
-              image={evento.ciudad.imagenPrincipal}
+              image={evento.imagen}
               alt={evento.nombre}
             />
             <CardContent sx={{ flexGrow: 1 }}>
