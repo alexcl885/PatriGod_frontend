@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Card, CardMedia, CardContent, Typography, Grid, Box } from '@mui/material';
+import { Card, CardMedia, CardContent, Typography, Grid, Box, Button } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const Ranking = () => {
   const [ciudades, setCiudades] = useState([]);
@@ -16,23 +17,38 @@ const Ranking = () => {
   return (
     <Box
       sx={{
-        minHeight: '100vh', // ocupa toda la altura de la ventana
+        minHeight: '100vh',
         display: 'flex',
-        flexDirection: 'column', // las tarjetas se alinearán una debajo de la otra
-        alignItems: 'center', // centra horizontalmente
-        justifyContent: 'flex-start', // alinea desde la parte superior
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
         paddingTop: 4,
         backgroundColor: '#f9f9f9',
+        position: 'relative', // necesario para posicionar el botón
       }}
     >
-    
+      {/* Botón Artículos */}
+      <Button
+        variant="contained"
+        color="primary"
+        sx={{
+          position: 'absolute',
+          top: 16,
+          right: 16,
+          zIndex: 10,
+          borderRadius: 2,
+          fontWeight: 'bold'
+        }}
+      ><Link to={"/rankingArticulos"}>Artículos</Link>
+        
+      </Button>
+
       <Grid container spacing={10} justifyContent="center" maxWidth="md">
         {ciudades.map((ciudad, index) => (
           <Grid item xs={12} key={ciudad.id}>
             <Card sx={{ borderRadius: 4, boxShadow: 3 }}>
               <CardMedia
                 component="img"
-                
                 image={ciudad.imagenPrincipal}
                 alt={ciudad.nombre}
               />

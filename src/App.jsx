@@ -12,6 +12,7 @@ import ComidaPage from './paginas/ComidaPage'
 import MonumentoPage from './paginas/MonumentoPage'
 import EventoPage from './paginas/EventoPage'
 import RankingPage from './paginas/RankingPage'
+import RankingArticulosPage from './paginas/RankingArticulosPage'
 
 const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const router = createBrowserRouter([
           {
             path:"/ranking",
             element:<RankingPage/>,
+          },
+          {
+            path:"/rankingArticulos",
+            element:<RankingArticulosPage/>,
           }
         ]
   }
