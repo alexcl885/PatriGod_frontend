@@ -13,6 +13,7 @@ import MonumentoPage from './paginas/MonumentoPage'
 import EventoPage from './paginas/EventoPage'
 import RankingPage from './paginas/RankingPage'
 import RankingArticulosPage from './paginas/RankingArticulosPage'
+import { UserProvider } from './contexto/UserContext'
 
 const router = createBrowserRouter([
   {
@@ -81,7 +82,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
+      <UserProvider>
       <RouterProvider router={router}/>
+      </UserProvider>
     </>
   )
 }

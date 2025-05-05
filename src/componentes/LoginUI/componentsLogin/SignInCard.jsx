@@ -14,8 +14,11 @@ import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { useNavigate } from 'react-router-dom';
-import { useRef } from 'react';
-import { useContext } from 'react';
+import { clearToken, setToken } from '../../../servicios/auth';
+import api from '../../../servicios/api';
+import { UserContext } from '../../../contexto/UserContext';
+
+
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -37,13 +40,14 @@ const Card = styled(MuiCard)(({ theme }) => ({
 }));
 
 export default function SignInCard() {
-  const [emailError, setEmailError] = React.useState(false);
-  const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
-  const [passwordError, setPasswordError] = React.useState(false);
-  const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
+  const navigate = useNavigate();
+
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [error, setError] = React.useState('');
+  const { setUser } = React.useContext(UserContext)
+
   const [open, setOpen] = React.useState(false);
-
-
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -53,45 +57,23 @@ export default function SignInCard() {
     setOpen(false);
   };
 
-
-
-  /*const handleSignIn = async (event) => {
+  const handleSignIn = async (event) => {
     event.preventDefault();
-    console.log(email.current.value);
-    if (email.current.value && password.current.value) {
-      const response = await login(email.current.value, password.current.value);
-      if (!response.error) {
-          navigate('/home');
-      }
-  }
-  }*/
+    setError('');
 
-  /*const validateInputs = () => {
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
-
-    let isValid = true;
-
-    if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
-      setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
-      isValid = false;
-    } else {
-      setEmailError(false);
-      setEmailErrorMessage('');
+    try {
+      const response = await api.post('/auth/login', { username, password });
+      setToken(response.data.jwt);
+      setUser(response.data.user);
+      console.log(response.data.user);
+      
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+      clearToken();
+      setError('Credenciales no válidas');
     }
-
-    if (!password.value || password.value.length < 6) {
-      setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
-      isValid = false;
-    } else {
-      setPasswordError(false);
-      setPasswordErrorMessage('');
-    }
-
-    return isValid;
-  };*/
+  };
 
   return (
     <Card variant="outlined">
@@ -107,26 +89,21 @@ export default function SignInCard() {
       </Typography>
       <Box
         component="form"
-        //onSubmit={handleSignIn}
+        onSubmit={handleSignIn}
         noValidate
         sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}
       >
         <FormControl>
-          <FormLabel htmlFor="email">Email</FormLabel>
+          <FormLabel htmlFor="username">Username</FormLabel>
           <TextField
-            error={emailError}
-            helperText={emailErrorMessage}
-            id="email"
-            type="email"
-            name="email"
-            placeholder="your@email.com"
-            autoComplete="email"
-            autoFocus
-            //nputRef={email}
+            id="username"
+            name="username"
+            placeholder="Nombre de Usuario"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
             fullWidth
             variant="outlined"
-            color={emailError ? 'error' : 'primary'}
           />
         </FormControl>
         <FormControl>
@@ -139,63 +116,66 @@ export default function SignInCard() {
               variant="body2"
               sx={{ alignSelf: 'baseline' }}
             >
-              Forgot your password?
+              ¿Olvidaste la contraseña?
             </Link>
           </Box>
           <TextField
-            error={passwordError}
-            helperText={passwordErrorMessage}
+            id="password"
             name="password"
             placeholder="••••••"
             type="password"
-            id="password"
-            autoComplete="current-password"
-            autoFocus
-            //inputRef={password}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
             fullWidth
             variant="outlined"
-            color={passwordError ? 'error' : 'primary'}
           />
         </FormControl>
+
+        {error && (
+          <Typography color="error" variant="body2">
+            {error}
+          </Typography>
+        )}
+
         <FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
-          label="Remember me"
+          label="Recuérdame"
         />
         <ForgotPassword open={open} handleClose={handleClose} />
-        <Button type="submit" fullWidth variant="contained"  >
-          Sign in
+        <Button type="submit" fullWidth variant="contained">
+          ¡Enviar!
         </Button>
         <Typography sx={{ textAlign: 'center' }}>
-          Don&apos;t have an account?{' '}
+          ¿No tienes cuenta?{' '}
           <span>
             <Link
               href="/register"
               variant="body2"
               sx={{ alignSelf: 'center' }}
             >
-              Sign up
+              Regístrate
             </Link>
           </span>
         </Typography>
       </Box>
-      <Divider>or</Divider>
+      <Divider>o</Divider>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         <Button
           fullWidth
           variant="outlined"
-          onClick={() => alert('Sign in with Google')}
+          onClick={() => alert('Inicia sesión con Google')}
           startIcon={<GoogleIcon />}
         >
-          Sign in with Google
+          Google
         </Button>
         <Button
           fullWidth
           variant="outlined"
-          onClick={() => alert('Sign in with Facebook')}
+          onClick={() => alert('Inicia sesión con Facebook')}
           startIcon={<FacebookIcon />}
         >
-          Sign in with Facebook
+          Facebook
         </Button>
       </Box>
     </Card>
