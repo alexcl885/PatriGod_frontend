@@ -14,7 +14,7 @@ import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { useNavigate } from 'react-router-dom';
-import { clearToken, setToken } from '../../../servicios/auth';
+import { clearToken, setTokenLocal } from '../../../servicios/auth';
 import api from '../../../servicios/api';
 import { UserContext } from '../../../contexto/UserContext';
 
@@ -45,7 +45,7 @@ export default function SignInCard() {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [error, setError] = React.useState('');
-  const { setUser } = React.useContext(UserContext)
+  const { setUser, setToken } = React.useContext(UserContext)
 
   const [open, setOpen] = React.useState(false);
 
@@ -62,10 +62,20 @@ export default function SignInCard() {
     setError('');
 
     try {
+      /**
+       * peticion para realizar el logueo con jwt
+       */
       const response = await api.post('/auth/login', { username, password });
-      setToken(response.data.jwt);
-      setUser(response.data.user);
-      console.log(response.data.user);
+      setTokenLocal(response.data.jwt);
+      setToken(response.data.jwt)
+      
+      /**
+       * peticion para recoger los datos del usuario 
+       * y guardar los datos del usuario en el contexto global
+       */
+      const responseUser = await api.get("/usuario")
+      setUser(responseUser.data);
+      console.log(responseUser.data);
       
       navigate('/');
     } catch (err) {

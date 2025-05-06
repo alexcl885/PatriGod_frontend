@@ -1,7 +1,7 @@
 export const getToken = () => localStorage.getItem('token');
 
 
-export const setToken = (token) => {
+export const setTokenLocal = (token) => {
   localStorage.setItem('token', token);
 };
 

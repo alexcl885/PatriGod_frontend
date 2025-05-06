@@ -1,7 +1,22 @@
-import { AppBar, Toolbar, Typography, Button, Box, Container } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
+import { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { UserContext } from '../../contexto/UserContext';
+import { clearToken, getToken } from '../../servicios/auth';
 
 const Header = () => {
+  const {token, setToken} = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    clearToken();
+    setToken(null)
+  };
+  const handleLogin = () => {
+    console.log("Inicar sesion");
+    navigate("/login")
+  }
+
   return (
     <AppBar position="sticky" sx={{ backgroundColor: '#051e37', boxShadow: 3, paddingY: 1 }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -64,6 +79,45 @@ const Header = () => {
           >
             Acerca de
           </Button>
+
+          {/* Botón de Logout si hay token */}
+          {token ? (
+            <Button 
+              onClick={handleLogout}
+              color="error" 
+              variant='outlined'
+              sx={{
+                fontWeight: 'bold', 
+                textTransform: 'uppercase', 
+                fontSize: '16px', 
+                '&:hover': {
+                  color: '#ff5252', 
+                  transform: 'scale(1.1)',
+                  transition: 'transform 0.2s ease-in-out'
+                }
+              }}
+            >
+              Logout
+            </Button>
+          ) : (
+            <Button 
+              onClick={handleLogin} 
+              color="primary" 
+              variant='contained'
+              sx={{
+                fontWeight: 'bold', 
+                textTransform: 'uppercase', 
+                fontSize: '16px', 
+                '&:hover': {
+                  transform: 'scale(1.1)',
+                  transition: 'transform 0.2s ease-in-out'
+                }
+              }}
+            >
+              Iniciar sesión
+            </Button>
+          )}
+
         </Box>
       </Toolbar>
     </AppBar>
