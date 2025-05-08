@@ -1,7 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Monumento from "../componentes/Monumento/Monumento";
-import { useEffect, useState } from "react";
-import { Box, Typography, Rating } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { Box, Typography, Rating, Button } from "@mui/material";
+import { UserContext } from "../contexto/UserContext";
+import api from "../servicios/api";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 const MonumentoPage = () => {
   const { id, idMonumento } = useParams();
@@ -9,6 +13,9 @@ const MonumentoPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [valoracion, setValoracion] = useState(0);
+  const navigate = useNavigate();
+
+  const { token, user } = useContext(UserContext);
 
   useEffect(() => {
     const fetchMonumento = async () => {
@@ -31,8 +38,30 @@ const MonumentoPage = () => {
 
   const handleRatingChange = (event, newValue) => {
     setValoracion(newValue);
-    console.log(`Valoración del monumento en ciudad ${id}:`, newValue);
-    // Aquí podrías hacer un fetch POST al backend para guardar la valoración
+  };
+
+  const postPuntuacion = async () => {
+    if (token) {
+      try {
+        const response = await api.post("/puntuacion", {
+          usuario: { id: user.id },
+          articulo: { id: idMonumento, type: "monumento" },
+          puntuacion: valoracion
+        });
+
+        if (response.status === 200) {
+          toast.success("¡Puntuación enviada correctamente! 🎉");
+        } else {
+          toast.error("No se pudo enviar la puntuación.");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Hubo un error. Inténtalo más tarde.");
+      }
+    } else {
+      toast.warning("Debes iniciar sesión para puntuar.");
+      navigate("/login");
+    }
   };
 
   if (loading) return <Typography>Cargando monumento...</Typography>;
@@ -49,6 +78,8 @@ const MonumentoPage = () => {
         boxSizing: "border-box"
       }}
     >
+      <ToastContainer position="top-right" autoClose={3000} />
+      
       <Monumento monumento={monumento} />
 
       <Box
@@ -86,6 +117,29 @@ const MonumentoPage = () => {
       >
         Tu puntuación: {valoracion || "Ninguna"}
       </Typography>
+
+      <Button
+        variant="contained"
+        size="large"
+        sx={{
+          background: "linear-gradient(to right, #0077b6, #00b4d8)",
+          color: "#fff",
+          fontWeight: "bold",
+          marginLeft: "780px",
+          borderRadius: "30px",
+          px: 6,
+          textTransform: "none",
+          transition: "all 0.3s ease",
+          "&:hover": {
+            background: "linear-gradient(to right, #023e8a, #0096c7)",
+            transform: "scale(1.05)",
+            boxShadow: "0px 4px 15px rgba(0,0,0,0.2)",
+          }
+        }}
+        onClick={postPuntuacion}
+      >
+        Enviar puntuación
+      </Button>
     </Box>
   );
 };

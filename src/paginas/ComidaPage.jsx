@@ -1,7 +1,10 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Comida from "../componentes/Comida/Comida";
-import { useEffect, useState } from "react";
-import { Box, Container, Rating, Typography } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { Box, Button, Container, Rating, Typography } from "@mui/material";
+import api from "../servicios/api";
+import { UserContext } from "../contexto/UserContext";
+import { toast, ToastContainer } from "react-toastify";
 
 const ComidaPage = () => {
   const { id, idComida } = useParams();
@@ -9,6 +12,7 @@ const ComidaPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [valoracion, setValoracion] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchComida = async () => {
@@ -41,12 +45,32 @@ const ComidaPage = () => {
   if (error) return <Typography color="error">Error: {error}</Typography>;
   if (!comida) return <Typography>No se encontró la comida.</Typography>;
 
+  const { token, setToken, user } = useContext(UserContext);
+
+  const postPuntuacion = async () => {
+    if (token) { //compruebo primero si el usuario esta registrado
+      const response = await api.post("/puntuacion", {
+        usuario: { id: user.id },
+        articulo: { id: idComida, type: "comida" },
+        puntuacion: valoracion
+      })
+      if (response.status === 200) {
+        toast.success("¡Puntuación enviada correctamente! 🎉");
+      } else {
+        toast.error("No se pudo enviar la puntuación.");
+      }
+    }
+    else {
+      console.log("Por favor registrate");
+      navigate("/login");
+    }
+  }
   return (
     <Box
       sx={{
         width: "100%",
         minHeight: "100vh",
-        
+
         px: { xs: 2, sm: 4, md: 6 },
         py: 4,
         boxSizing: "border-box",
@@ -65,6 +89,8 @@ const ComidaPage = () => {
           width: "100%",
         }}
       >
+        {/*notificacion con libreria externa */}
+        <ToastContainer position="top-right" autoClose={3000} />
         <Typography variant="h5" sx={{ mb: 2 }}>
           ¿Qué te han parecido las comidas?
         </Typography>
@@ -89,6 +115,28 @@ const ComidaPage = () => {
       >
         Tu puntuación: {valoracion || "Ninguna"}
       </Typography>
+      <Button
+        variant="contained"
+        size="large"
+        sx={{
+          background: "linear-gradient(to right, #0077b6, #00b4d8)",
+          color: "white",
+          fontWeight: "bold",
+          marginLeft: "780px",
+          borderRadius: "30px",
+          px: 6,
+          textTransform: "none",
+          transition: "all 0.3s ease",
+          "&:hover": {
+            background: "linear-gradient(to right, #023e8a, #0096c7)",
+            transform: "scale(1.05)",
+            boxShadow: "0px 4px 15px rgba(221, 198, 198, 0.2)",
+          }
+        }}
+        onClick={postPuntuacion}
+      >
+        Enviar puntuación
+      </Button>
     </Box>
   );
 };

@@ -103,6 +103,53 @@ npm install leaflet react-leaflet@next
 
 ---
 
+### 🎯 Notificaciones al puntuar un artículo
+
+Para mejorar la experiencia del usuario al puntuar un artículo de cada ciudad, se han implementado notificaciones visuales utilizando una librería externa.
+
+---
+
+#### 📦 Instalación de `react-toastify`
+
+Primero, instalo la librería con el siguiente comando:
+
+```bash
+npm install react-toastify
+```
+#### 🔔 Implementación de las notificaciones
+
+Una vez instalada, puedes utilizarla para mostrar notificaciones dependiendo del resultado de la solicitud al enviar la puntuación.
+
+Ejemplo de implementación:
+```java
+  const postPuntuacion = async () => {
+    if (token) {
+      try {
+        const response = await api.post("/puntuacion", {
+          usuario: { id: user.id },
+          articulo: { id: idMonumento, type: "monumento" },
+          puntuacion: valoracion
+        });
+
+        if (response.status === 200) {
+          toast.success("¡Puntuación enviada correctamente! 🎉");
+        } else {
+          toast.error("No se pudo enviar la puntuación.");
+        }
+      } catch (error) {
+        console.error(error);
+        toast.error("Hubo un error. Inténtalo más tarde.");
+      }
+    } else {
+      toast.warning("Debes iniciar sesión para puntuar.");
+      navigate("/login");
+    }
+  };
+```
+✅ Adenás habria que configurar en la salida del componente donde queremos que se encuentre la notificacion:
+```jsx
+<ToastContainer position="top-center" autoClose={3000} />
+```
 
 ##  Autor
 

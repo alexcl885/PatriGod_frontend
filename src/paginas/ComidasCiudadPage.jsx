@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ComidasCiudad from '../componentes/ComidasCiudad/ComidasCiudad';
 import { Box, Container, Typography } from '@mui/material';
+import { ToastContainer } from 'react-toastify';
 
 const ComidasCiudadPage = () => {
   const { id } = useParams(); // ID de la ciudad desde la URL
