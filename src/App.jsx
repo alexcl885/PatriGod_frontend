@@ -14,6 +14,7 @@ import EventoPage from './paginas/EventoPage'
 import RankingPage from './paginas/RankingPage'
 import RankingArticulosPage from './paginas/RankingArticulosPage'
 import { UserProvider } from './contexto/UserContext'
+import RegisterInSide from './componentes/Registro/RegisterInSide'
 
 const router = createBrowserRouter([
   {
@@ -65,8 +66,8 @@ const router = createBrowserRouter([
             element:<LoginPage/>,
           },
           {
-            path:"/logout",
-            element:<p>Logout</p>,
+            path:"/register",
+            element:<RegisterInSide/>,
           },
           {
             path:"/ranking",

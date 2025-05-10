@@ -7,13 +7,12 @@ import Divider from '@mui/material/Divider';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
-import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { clearToken, setTokenLocal } from '../../../servicios/auth';
 import api from '../../../servicios/api';
 import { UserContext } from '../../../contexto/UserContext';
@@ -160,7 +159,7 @@ export default function SignInCard() {
           ¿No tienes cuenta?{' '}
           <span>
             <Link
-              href="/register"
+              to={"/register"}
               variant="body2"
               sx={{ alignSelf: 'center' }}
             >
