@@ -32,7 +32,7 @@ const RankingComidas = () => {
   return (
     <Box sx={{ padding: 4 }}>
       <Typography variant="h4" align="center" gutterBottom fontWeight="bold">
-        Ranking de Ciudades por Monumentos
+        Ranking de Ciudades por Comidas
       </Typography>
       <TableContainer component={Paper} sx={{ borderRadius: 4, boxShadow: 3 }}>
         <Table>

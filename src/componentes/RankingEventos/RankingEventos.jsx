@@ -32,7 +32,7 @@ const RankingEventos = () => {
   return (
     <Box sx={{ padding: 4 }}>
       <Typography variant="h4" align="center" gutterBottom fontWeight="bold">
-        Ranking de Ciudades por Monumentos
+        Ranking de Ciudades por Eventos
       </Typography>
       <TableContainer component={Paper} sx={{ borderRadius: 4, boxShadow: 3 }}>
         <Table>
@@ -68,7 +68,7 @@ const RankingEventos = () => {
                   <Typography fontWeight="medium">{ciudad.ciudad_nombre}</Typography>
                 </TableCell>
                 <TableCell>
-                  ⭐ {ciudad.puntuacion_media.toFixed(2)}
+                  ⭐ {ciudad.puntuacion_media ? ciudad.puntuacion_media.toFixed(2) : "0"}
                 </TableCell>
               </TableRow>
             ))}

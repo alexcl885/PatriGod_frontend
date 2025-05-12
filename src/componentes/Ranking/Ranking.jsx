@@ -60,7 +60,7 @@ const Ranking = () => {
                   {ciudad.provincia}, {ciudad.comunidadAutonoma}
                 </Typography>
                 <Typography variant="body1" sx={{ marginTop: 1 }}>
-                  ⭐ Puntuación: {ciudad.puntuacion?.toFixed(2)}
+                  ⭐ Puntuación: {ciudad.puntuacion ? ciudad.puntuacion?.toFixed(2) : "0"}
                 </Typography>
               </CardContent>
             </Card>

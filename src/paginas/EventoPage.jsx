@@ -7,6 +7,7 @@ import api from "../servicios/api";
 import { toast, ToastContainer } from "react-toastify";
 
 const EventoPage = () => {
+  const { token, setToken, user } = useContext(UserContext);
   const { id, idEvento } = useParams();
   const [evento, setEvento] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -42,7 +43,6 @@ const EventoPage = () => {
   if (error) return <Typography color="error">Error: {error}</Typography>;
   if (!evento) return <Typography>No se encontró el evento.</Typography>;
 
-  const { token, setToken, user } = useContext(UserContext);
 
   const postPuntuacion = async () => {
     if (token) { //compruebo primero si el usuario esta registrado

@@ -54,6 +54,18 @@ const router = createBrowserRouter([
             element:<EventoPage></EventoPage>,
           },
           {
+            path:"ciudad/add/articulo/monumento",
+            element:<EventoPage></EventoPage>,
+          },
+          {
+            path:"ciudad/add/articulo/comida",
+            element:<EventoPage></EventoPage>,
+          },
+          {
+            path:"ciudad/add/articulo/evento",
+            element:<EventoPage></EventoPage>,
+          },
+          {
             path:"acerca",
             element:<AcercaPage/>,
           },
