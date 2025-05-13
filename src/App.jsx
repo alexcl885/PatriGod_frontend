@@ -15,6 +15,7 @@ import RankingPage from './paginas/RankingPage'
 import RankingArticulosPage from './paginas/RankingArticulosPage'
 import { UserProvider } from './contexto/UserContext'
 import RegisterInSide from './componentes/Registro/RegisterInSide'
+import GestionUsuariosPage from './paginas/GestionUsuariosPage'
 
 const router = createBrowserRouter([
   {
@@ -88,6 +89,10 @@ const router = createBrowserRouter([
           {
             path:"/rankingArticulos",
             element:<RankingArticulosPage/>,
+          },
+          {
+            path:"/usuarios",
+            element:<GestionUsuariosPage/>,
           }
         ]
   }

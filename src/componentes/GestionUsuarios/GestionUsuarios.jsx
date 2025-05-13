@@ -1,0 +1,160 @@
+import React, { useEffect, useState } from 'react';
+import {
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  Avatar,
+  Chip,
+  CircularProgress,
+  Box,
+  IconButton,
+  Tooltip,
+  CardHeader
+} from '@mui/material';
+import { ToggleOn, ToggleOff, Person } from '@mui/icons-material';
+import { pink, lightGreen, deepOrange, deepPurple, blueGrey } from '@mui/material/colors';
+
+const GestionUsuarios = () => {
+  const [usuarios, setUsuarios] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [accionEnProgreso, setAccionEnProgreso] = useState(null);
+
+  const fetchUsuarios = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/admin/usuario');
+      if (!response.ok) throw new Error('Error al obtener los usuarios');
+      const data = await response.json();
+      setUsuarios(data);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchUsuarios();
+  }, []);
+
+  const cambiarEstadoUsuario = async (id, nuevoEstado) => {
+    setAccionEnProgreso(id);
+    try {
+      const response = await fetch(`http://localhost:8080/api/admin/usuario/${id}/estado`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ activo: nuevoEstado }),
+      });
+
+      if (!response.ok) throw new Error('Error al actualizar estado del usuario');
+
+      setUsuarios((prev) =>
+        prev.map((u) => (u.id === id ? { ...u, activo: nuevoEstado } : u))
+      );
+    } catch (error) {
+      console.error('Error al cambiar estado:', error);
+    } finally {
+      setAccionEnProgreso(null);
+    }
+  };
+
+  return (
+    <Container maxWidth="xl" sx={{ mt: 4 }}>
+      <Typography variant="h4" gutterBottom sx={{ color: pink[100], fontWeight: 'bold' }}>
+        Gestión de Usuarios
+      </Typography>
+
+      {loading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Grid container spacing={3} sx={{ mt: 2 }}>
+          {usuarios.map((usuario) => (
+            <Grid item xs={12} sm={6} md={4} key={usuario.id}>
+              <Card
+                sx={{
+                  background: 'linear-gradient(135deg, #2c2c54 0%, #4b6584 100%)',
+                  color: 'white',
+                  borderRadius: 4,
+                  transition: 'transform 0.25s ease-in-out',
+                  '&:hover': {
+                    transform: 'scale(1.03)',
+                    boxShadow: '0 10px 25px rgba(0,0,0,0.4)',
+                  },
+                }}
+              >
+                <CardHeader
+                  avatar={
+                    <Avatar sx={{ bgcolor: deepOrange[400] }}>
+                      <Person />
+                    </Avatar>
+                  }
+                  title={<Typography variant="h6" color="white">{usuario.username}</Typography>}
+                  subheader={<Typography variant="caption" color={blueGrey[200]}>ID: {usuario.id}</Typography>}
+                />
+                <CardContent>
+                  <Typography variant="body2" sx={{ color: pink[100] }}>
+                    <strong>Email:</strong> {usuario.email}
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: pink[100], mt: 1 }}>
+                    <strong>Rol:</strong>{' '}
+                    <Chip
+                      label={usuario.tipo}
+                      size="small"
+                      sx={{
+                        backgroundColor: usuario.tipo === 'ADMINISTRADOR' ? '#d500f9' : '#2979ff',
+                        color: 'white',
+                        ml: 1
+                      }}
+                    />
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: pink[100], mt: 1 }}>
+                    <strong>Estado:</strong>{' '}
+                    <Chip
+                      label={usuario.activo ? 'Activo' : 'Inactivo'}
+                      sx={{
+                        backgroundColor: usuario.activo ? lightGreen[500] : pink[500],
+                        color: 'white',
+                        ml: 1
+                      }}
+                      size="small"
+                    />
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: pink[100], mt: 1 }}>
+                    <strong>Fecha de creación:</strong> {new Date(usuario.fechaCreacion).toLocaleString()}
+                  </Typography>
+
+                  <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+                    <Tooltip title={usuario.activo ? 'Desactivar usuario' : 'Activar usuario'}>
+                      <span>
+                        <IconButton
+                          onClick={() => cambiarEstadoUsuario(usuario.id, !usuario.activo)}
+                          disabled={accionEnProgreso === usuario.id}
+                          sx={{
+                            color: usuario.activo ? lightGreen[300] : pink[300],
+                            '&:hover': {
+                              color: usuario.activo ? lightGreen[100] : pink[100]
+                            }
+                          }}
+                          
+                        >
+                          {usuario.activo ? <ToggleOff /> : <ToggleOn />}
+                        </IconButton>
+                      </span>
+                    </Tooltip>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
+    </Container>
+  );
+};
+
+export default GestionUsuarios;

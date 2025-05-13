@@ -5,7 +5,7 @@ import { UserContext } from '../../contexto/UserContext';
 import { clearToken, getToken } from '../../servicios/auth';
 
 const Header = () => {
-  const {token, setToken} = useContext(UserContext);
+  const { token, setToken, user } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -29,14 +29,14 @@ const Header = () => {
               style={{ height: '60px', marginRight: '15px', borderRadius: '30%', boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)' }}
             />
           </Link>
-          <Typography 
-            variant="h4" 
-            sx={{ 
-              fontWeight: 700, 
-              color: 'white', 
-              textTransform: 'uppercase', 
-              letterSpacing: 2, 
-              textShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)' 
+          <Typography
+            variant="h4"
+            sx={{
+              fontWeight: 700,
+              color: 'white',
+              textTransform: 'uppercase',
+              letterSpacing: 2,
+              textShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)'
             }}
           >
             atriGod
@@ -45,16 +45,36 @@ const Header = () => {
 
         {/* Navegación */}
         <Box sx={{ display: 'flex', gap: 3 }}>
-          <Button 
-            component={Link} 
-            to="/ranking" 
-            color="inherit" 
+          {user?.tipo === 'ADMINISTRADOR' && (
+            <Button
+              component={Link}
+              to="/usuarios"
+              color="inherit"
+              sx={{
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                fontSize: '16px',
+                '&:hover': {
+                  color: '#ff9800',
+                  transform: 'scale(1.1)',
+                  transition: 'transform 0.2s ease-in-out'
+                }
+              }}
+            >
+              Usuarios
+            </Button>
+          )}
+
+          <Button
+            component={Link}
+            to="/ranking"
+            color="inherit"
             sx={{
-              fontWeight: 'bold', 
-              textTransform: 'uppercase', 
-              fontSize: '16px', 
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              fontSize: '16px',
               '&:hover': {
-                color: '#ff9800', 
+                color: '#ff9800',
                 transform: 'scale(1.1)',
                 transition: 'transform 0.2s ease-in-out'
               }
@@ -62,16 +82,16 @@ const Header = () => {
           >
             Ranking
           </Button>
-          <Button 
-            component={Link} 
-            to="/acerca" 
-            color="inherit" 
+          <Button
+            component={Link}
+            to="/acerca"
+            color="inherit"
             sx={{
-              fontWeight: 'bold', 
-              textTransform: 'uppercase', 
-              fontSize: '16px', 
+              fontWeight: 'bold',
+              textTransform: 'uppercase',
+              fontSize: '16px',
               '&:hover': {
-                color: '#ff9800', 
+                color: '#ff9800',
                 transform: 'scale(1.1)',
                 transition: 'transform 0.2s ease-in-out'
               }
@@ -82,16 +102,16 @@ const Header = () => {
 
           {/* Botón de Logout si hay token */}
           {token ? (
-            <Button 
+            <Button
               onClick={handleLogout}
-              color="error" 
+              color="error"
               variant='outlined'
               sx={{
-                fontWeight: 'bold', 
-                textTransform: 'uppercase', 
-                fontSize: '16px', 
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                fontSize: '16px',
                 '&:hover': {
-                  color: '#ff5252', 
+                  color: '#ff5252',
                   transform: 'scale(1.1)',
                   transition: 'transform 0.2s ease-in-out'
                 }
@@ -100,14 +120,14 @@ const Header = () => {
               Logout
             </Button>
           ) : (
-            <Button 
-              onClick={handleLogin} 
-              color="primary" 
+            <Button
+              onClick={handleLogin}
+              color="primary"
               variant='contained'
               sx={{
-                fontWeight: 'bold', 
-                textTransform: 'uppercase', 
-                fontSize: '16px', 
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                fontSize: '16px',
                 '&:hover': {
                   transform: 'scale(1.1)',
                   transition: 'transform 0.2s ease-in-out'
