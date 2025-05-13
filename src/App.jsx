@@ -16,6 +16,9 @@ import RankingArticulosPage from './paginas/RankingArticulosPage'
 import { UserProvider } from './contexto/UserContext'
 import RegisterInSide from './componentes/Registro/RegisterInSide'
 import GestionUsuariosPage from './paginas/GestionUsuariosPage'
+import AddNewMonumentoPage from './paginas/AddNewMonumentoPage'
+import AddNewEventoPage from './paginas/AddNewEventoPage'
+import AddNewComidaPage from './paginas/AddNewComidaPage'
 
 const router = createBrowserRouter([
   {
@@ -55,16 +58,16 @@ const router = createBrowserRouter([
             element:<EventoPage></EventoPage>,
           },
           {
-            path:"ciudad/add/articulo/monumento",
-            element:<EventoPage></EventoPage>,
+            path:"ciudad/:id/add/monumento",
+            element:<AddNewMonumentoPage></AddNewMonumentoPage>,
           },
           {
-            path:"ciudad/add/articulo/comida",
-            element:<EventoPage></EventoPage>,
+            path:"ciudad/:id/add/comida",
+            element:<AddNewComidaPage></AddNewComidaPage>,
           },
           {
-            path:"ciudad/add/articulo/evento",
-            element:<EventoPage></EventoPage>,
+            path:"ciudad/:id/add/evento",
+            element:<AddNewEventoPage></AddNewEventoPage>,
           },
           {
             path:"acerca",

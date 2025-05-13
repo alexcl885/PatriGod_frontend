@@ -16,10 +16,13 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Articulos from '../componentes/Articulos/Articulos';
 import Ciudad from '../componentes/Ciudad/Ciudad';
 import { UserContext } from '../contexto/UserContext';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const CiudadPage = () => {
   const { user } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const {id} = useParams();
 
   const handleCloseModal = () => setModalOpen(false);
 
@@ -33,7 +36,15 @@ const CiudadPage = () => {
 
   const seleccionarTipo = (tipo) =>{
     console.log(tipo);
-    
+    if (tipo == "monumento"){
+      navigate(`/ciudad/${id}/add/${tipo}`)
+    }
+    if (tipo == "comida"){
+      navigate(`/ciudad/${id}/add/${tipo}`)
+    }
+    if (tipo == "evento"){
+      navigate(`/ciudad/${id}/add/${tipo}`)
+    } 
 
   }
 
