@@ -11,15 +11,17 @@ import {
   Box,
   IconButton,
   Tooltip,
-  CardHeader
+  CardHeader,
+  TextField
 } from '@mui/material';
 import { ToggleOn, ToggleOff, Person } from '@mui/icons-material';
-import { pink, lightGreen, deepOrange, deepPurple, blueGrey } from '@mui/material/colors';
+import { pink, lightGreen, deepOrange, blueGrey } from '@mui/material/colors';
 
 const GestionUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [accionEnProgreso, setAccionEnProgreso] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchUsuarios = async () => {
     try {
@@ -43,9 +45,7 @@ const GestionUsuarios = () => {
     try {
       const response = await fetch(`http://localhost:8080/api/admin/usuario/${id}/estado`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ activo: nuevoEstado }),
       });
 
@@ -61,11 +61,24 @@ const GestionUsuarios = () => {
     }
   };
 
+  const usuariosFiltrados = usuarios.filter((usuario) =>
+    usuario.username.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <Container maxWidth="xl" sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom sx={{ color: pink[100], fontWeight: 'bold' }}>
         Gestión de Usuarios
       </Typography>
+
+      <TextField
+        label="Buscar por nombre de usuario"
+        variant="outlined"
+        fullWidth
+        sx={{ mb: 4, backgroundColor: '#fff', borderRadius: 2 }}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
 
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6 }}>
@@ -73,7 +86,7 @@ const GestionUsuarios = () => {
         </Box>
       ) : (
         <Grid container spacing={3} sx={{ mt: 2 }}>
-          {usuarios.map((usuario) => (
+          {usuariosFiltrados.map((usuario) => (
             <Grid item xs={12} sm={6} md={4} key={usuario.id}>
               <Card
                 sx={{
@@ -88,11 +101,7 @@ const GestionUsuarios = () => {
                 }}
               >
                 <CardHeader
-                  avatar={
-                    <Avatar sx={{ bgcolor: deepOrange[400] }}>
-                      <Person />
-                    </Avatar>
-                  }
+                  avatar={<Avatar sx={{ bgcolor: deepOrange[400] }}><Person /></Avatar>}
                   title={<Typography variant="h6" color="white">{usuario.username}</Typography>}
                   subheader={<Typography variant="caption" color={blueGrey[200]}>ID: {usuario.id}</Typography>}
                 />
@@ -140,7 +149,6 @@ const GestionUsuarios = () => {
                               color: usuario.activo ? lightGreen[100] : pink[100]
                             }
                           }}
-                          
                         >
                           {usuario.activo ? <ToggleOff /> : <ToggleOn />}
                         </IconButton>

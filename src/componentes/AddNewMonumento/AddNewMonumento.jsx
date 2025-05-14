@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
 import {
-  Container, TextField, Grid, Typography, Button, Paper
+  Container, Paper, Typography, Stepper, Step, StepLabel,
+  TextField, Button, Grid, Box, InputAdornment
 } from '@mui/material';
+import { AddLocationAlt } from '@mui/icons-material';
+import api from '../../servicios/api';
+import { useParams } from 'react-router-dom';
+
+const steps = ['Información General', 'Historia y Arquitectura', 'Ubicación y Visitas', 'Curiosidades'];
+
 
 const AddNewMonumento = () => {
-  const [formData, setFormData] = useState({
+  const [activeStep, setActiveStep] = useState(0);
+  const { id } = useParams();
+  const initialFormData = {
+    type: "monumento",
+    ciudad: 2,
     nombre: '',
     descripcion: '',
     imagen: '',
@@ -16,10 +27,9 @@ const AddNewMonumento = () => {
     declaracionUnesco: '',
     altura: '',
     materialesPrincipales: '',
-    curiosidades: '',
-    puesto: '',
-    ciudadId: '', // este campo debe vincularse a la ciudad que elijas
-  });
+    curiosidades: ''
+  };
+  const [formData, setFormData] = useState(initialFormData);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -29,156 +39,167 @@ const AddNewMonumento = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-    // Aquí se haría la llamada POST al backend para guardar el nuevo monumento
+  const handleNext = () => {
+    setActiveStep((prev) => prev + 1);
   };
 
-  return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Paper elevation={3} sx={{ p: 4, borderRadius: 4 }}>
-        <Typography variant="h4" gutterBottom fontWeight="bold">
-          Añadir Nuevo Monumento
-        </Typography>
+  const handleBack = () => {
+    setActiveStep((prev) => prev - 1);
+  };
 
-        <form onSubmit={handleSubmit}>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    const dataParaEnviar = {
+      ...formData,
+      ciudad: typeof formData.ciudad === 'object' ? formData.ciudad.id : formData.ciudad
+    };
+  
+    try {
+      const envioDatos = await api.post("/monumento", dataParaEnviar);
+      console.log("Monumento creado con éxito");
+    } catch (error) {
+      console.error("Error al guardar:", error.response?.data || error.message);
+    }
+  };
+  
+
+  const isLastStep = activeStep === steps.length - 1;
+
+  const renderStepContent = (step) => {
+    switch (step) {
+      case 0:
+        return (
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <TextField
-                label="Nombre del Monumento"
-                name="nombre"
-                value={formData.nombre}
-                onChange={handleChange}
-                fullWidth
-                required
-              />
+              <TextField label="Nombre del Monumento" name="nombre" fullWidth required value={formData.nombre} onChange={handleChange} />
             </Grid>
-
             <Grid item xs={12}>
-              <TextField
-                label="Descripción"
-                name="descripcion"
-                value={formData.descripcion}
-                onChange={handleChange}
-                multiline
-                rows={4}
-                fullWidth
-                required
-              />
+              <TextField label="Descripción" name="descripcion" fullWidth required multiline rows={4} value={formData.descripcion} onChange={handleChange} />
             </Grid>
-
             <Grid item xs={12}>
-              <TextField
-                label="URL de la Imagen Principal"
-                name="imagen"
-                value={formData.imagen}
-                onChange={handleChange}
-                fullWidth
-              />
+              <TextField label="URL de Imagen" name="imagen" fullWidth value={formData.imagen} onChange={handleChange} />
             </Grid>
+          </Grid>
+        );
 
+      case 1:
+        return (
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={6}>
+              <TextField label="Estilo Arquitectónico" name="estiloArquitectonico" fullWidth value={formData.estiloArquitectonico} onChange={handleChange} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField label="Época de Construcción" name="epocaConstruccion" fullWidth value={formData.epocaConstruccion} onChange={handleChange} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField label="Declarado por la UNESCO (año)" name="declaracionUnesco" fullWidth value={formData.declaracionUnesco} onChange={handleChange} />
+            </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Estilo Arquitectónico"
-                name="estiloArquitectonico"
-                value={formData.estiloArquitectonico}
-                onChange={handleChange}
+                label="Altura"
+                name="altura"
+                type="number"
                 fullWidth
+                value={formData.altura}
+                onChange={handleChange}
+                InputProps={{ endAdornment: <InputAdornment position="end">m</InputAdornment> }}
               />
             </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Época de Construcción"
-                name="epocaConstruccion"
-                value={formData.epocaConstruccion}
-                onChange={handleChange}
-                fullWidth
-              />
+            <Grid item xs={12}>
+              <TextField label="Materiales Principales" name="materialesPrincipales" fullWidth value={formData.materialesPrincipales} onChange={handleChange} />
             </Grid>
+          </Grid>
+        );
 
+      case 2:
+        return (
+          <Grid container spacing={3}>
             <Grid item xs={12}>
               <TextField
                 label="Ubicación"
                 name="ubicacion"
+                fullWidth
                 value={formData.ubicacion}
                 onChange={handleChange}
-                fullWidth
+                InputProps={{ startAdornment: <InputAdornment position="start"><AddLocationAlt /></InputAdornment> }}
               />
             </Grid>
-
             <Grid item xs={12} sm={6}>
-              <TextField
-                label="Horario de Visitas"
-                name="horarioVisitas"
-                value={formData.horarioVisitas}
-                onChange={handleChange}
-                fullWidth
-              />
+              <TextField label="Horario de Visitas" name="horarioVisitas" fullWidth value={formData.horarioVisitas} onChange={handleChange} />
             </Grid>
-
             <Grid item xs={12} sm={6}>
               <TextField
                 label="Precio de Entrada"
                 name="precioEntrada"
+                fullWidth
                 value={formData.precioEntrada}
                 onChange={handleChange}
-                fullWidth
+                InputProps={{ endAdornment: <InputAdornment position="end">€</InputAdornment> }}
               />
             </Grid>
+          </Grid>
+        );
 
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Año Declarado por la UNESCO"
-                name="declaracionUnesco"
-                value={formData.declaracionUnesco}
-                onChange={handleChange}
-                fullWidth
-              />
-            </Grid>
-
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Altura (metros)"
-                name="altura"
-                value={formData.altura}
-                onChange={handleChange}
-                type="number"
-                fullWidth
-              />
-            </Grid>
-
-            <Grid item xs={12}>
-              <TextField
-                label="Materiales Principales"
-                name="materialesPrincipales"
-                value={formData.materialesPrincipales}
-                onChange={handleChange}
-                fullWidth
-              />
-            </Grid>
-
+      case 3:
+        return (
+          <Grid container spacing={3}>
             <Grid item xs={12}>
               <TextField
                 label="Curiosidades"
                 name="curiosidades"
+                fullWidth
+                multiline
+                rows={4}
                 value={formData.curiosidades}
                 onChange={handleChange}
-                multiline
-                rows={3}
-                fullWidth
               />
             </Grid>
+          </Grid>
+        );
 
+      default:
+        return null;
+    }
+  };
 
+  return (
+    <Container maxWidth="md" sx={{ mt: 6 }}>
+      <Paper elevation={4} sx={{ p: 5, borderRadius: 4 }}>
+        <Typography variant="h4" gutterBottom fontWeight="bold">
+          Añadir Nuevo Monumento
+        </Typography>
 
-            <Grid item xs={12}>
-              <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 2 }}>
+        <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+
+        <form onSubmit={handleSubmit}>
+          {renderStepContent(activeStep)}
+
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
+            <Button
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              variant="outlined"
+            >
+              Volver
+            </Button>
+
+            {isLastStep ? (
+              <Button type="submit" variant="contained" color="primary">
                 Guardar Monumento
               </Button>
-            </Grid>
-          </Grid>
+            ) : (
+              <Button variant="contained" onClick={handleNext}>
+                Siguiente
+              </Button>
+            )}
+          </Box>
         </form>
       </Paper>
     </Container>

@@ -64,6 +64,25 @@ const Header = () => {
               Usuarios
             </Button>
           )}
+          {token && (
+            <Button
+              component={Link}
+              to="/datos_usuario"
+              color="inherit"
+              sx={{
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                fontSize: '16px',
+                '&:hover': {
+                  color: '#ff9800',
+                  transform: 'scale(1.1)',
+                  transition: 'transform 0.2s ease-in-out'
+                }
+              }}
+            >
+              datos
+            </Button>
+          )}
 
           <Button
             component={Link}

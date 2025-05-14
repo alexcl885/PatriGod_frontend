@@ -19,6 +19,7 @@ import GestionUsuariosPage from './paginas/GestionUsuariosPage'
 import AddNewMonumentoPage from './paginas/AddNewMonumentoPage'
 import AddNewEventoPage from './paginas/AddNewEventoPage'
 import AddNewComidaPage from './paginas/AddNewComidaPage'
+import DetallesUsuarioPage from './paginas/DetallesUsuarioPage'
 
 const router = createBrowserRouter([
   {
@@ -75,7 +76,7 @@ const router = createBrowserRouter([
           },
           {
             path:"datos_usuario",
-            element:<p>Informacion Usuario</p>,
+            element:<DetallesUsuarioPage/>,
           },
           {
             path:"/login",
