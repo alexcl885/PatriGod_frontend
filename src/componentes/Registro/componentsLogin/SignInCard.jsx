@@ -70,6 +70,9 @@ export default function SignInCard() {
       });
 
       console.log('Usuario registrado:', response.data);
+      const responseEmail = await api.post(`/email/registro/${email}`);
+      console.log("Email enviado: "+ responseEmail);
+      
       navigate('/login'); // Redirige al login si todo va bien
     } catch (err) {
       console.error(err);

@@ -91,7 +91,7 @@ const router = createBrowserRouter([
             element:<RankingPage/>,
           },
           {
-            path:"/rankingArticulos",
+            path:"/ranking/articulos",
             element:<RankingArticulosPage/>,
           },
           {

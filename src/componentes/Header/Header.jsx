@@ -2,7 +2,7 @@ import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../contexto/UserContext';
-import { clearToken, getToken } from '../../servicios/auth';
+import { clearToken } from '../../servicios/auth';
 
 const Header = () => {
   const { token, setToken, user } = useContext(UserContext);
@@ -10,131 +10,66 @@ const Header = () => {
 
   const handleLogout = () => {
     clearToken();
-    setToken(null)
+    setToken(null);
+    navigate('/');
   };
+
   const handleLogin = () => {
-    console.log("Inicar sesion");
-    navigate("/login")
-  }
+    navigate('/login');
+  };
 
   return (
-    <AppBar position="sticky" sx={{ backgroundColor: '#051e37', boxShadow: 3, paddingY: 1 }}>
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        {/* Logo */}
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+    <AppBar position="sticky" sx={{ backgroundColor: '#051e37', boxShadow: 4, py: 1 }}>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', px: { xs: 2, sm: 4 } }}>
+        {/* LOGO + TITULO */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Link to="/" style={{ textDecoration: 'none' }}>
             <img
               src="/src/imagenes/p-cortada.png"
               alt="Logo"
-              style={{ height: '60px', marginRight: '15px', borderRadius: '30%', boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)' }}
+              style={{
+                height: '60px',
+                borderRadius: '50%',
+                boxShadow: '0 0 12px rgba(255, 255, 255, 0.3)',
+                transition: 'transform 0.3s',
+              }}
+              onMouseOver={e => e.currentTarget.style.transform = 'rotate(5deg) scale(1.05)'}
+              onMouseOut={e => e.currentTarget.style.transform = 'none'}
             />
           </Link>
           <Typography
             variant="h4"
             sx={{
-              fontWeight: 700,
-              color: 'white',
+              fontWeight: 900,
+              color: '#ffffff',
+              letterSpacing: 3,
+              fontFamily: 'Montserrat, sans-serif',
               textTransform: 'uppercase',
-              letterSpacing: 2,
-              textShadow: '2px 2px 5px rgba(0, 0, 0, 0.3)'
+              textShadow: '2px 2px 8px rgba(0,0,0,0.4)',
             }}
           >
             atriGod
           </Typography>
         </Box>
 
-        {/* Navegación */}
-        <Box sx={{ display: 'flex', gap: 3 }}>
+        {/* NAVIGATION */}
+        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
           {user?.tipo === 'ADMINISTRADOR' && (
-            <Button
-              component={Link}
-              to="/usuarios"
-              color="inherit"
-              sx={{
-                fontWeight: 'bold',
-                textTransform: 'uppercase',
-                fontSize: '16px',
-                '&:hover': {
-                  color: '#ff9800',
-                  transform: 'scale(1.1)',
-                  transition: 'transform 0.2s ease-in-out'
-                }
-              }}
-            >
-              Usuarios
-            </Button>
+            <NavButton to="/usuarios" text="Usuarios" />
           )}
           {token && (
-            <Button
-              component={Link}
-              to="/datos_usuario"
-              color="inherit"
-              sx={{
-                fontWeight: 'bold',
-                textTransform: 'uppercase',
-                fontSize: '16px',
-                '&:hover': {
-                  color: '#ff9800',
-                  transform: 'scale(1.1)',
-                  transition: 'transform 0.2s ease-in-out'
-                }
-              }}
-            >
-              datos
-            </Button>
+            <NavButton to="/datos_usuario" text="Datos" />
           )}
+          <NavButton to="/ranking" text="Ranking" />
+          <NavButton to="/acerca" text="Acerca de" />
 
-          <Button
-            component={Link}
-            to="/ranking"
-            color="inherit"
-            sx={{
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              fontSize: '16px',
-              '&:hover': {
-                color: '#ff9800',
-                transform: 'scale(1.1)',
-                transition: 'transform 0.2s ease-in-out'
-              }
-            }}
-          >
-            Ranking
-          </Button>
-          <Button
-            component={Link}
-            to="/acerca"
-            color="inherit"
-            sx={{
-              fontWeight: 'bold',
-              textTransform: 'uppercase',
-              fontSize: '16px',
-              '&:hover': {
-                color: '#ff9800',
-                transform: 'scale(1.1)',
-                transition: 'transform 0.2s ease-in-out'
-              }
-            }}
-          >
-            Acerca de
-          </Button>
-
-          {/* Botón de Logout si hay token */}
+          {/* AUTH BUTTON */}
           {token ? (
             <Button
               onClick={handleLogout}
               color="error"
-              variant='outlined'
-              sx={{
-                fontWeight: 'bold',
-                textTransform: 'uppercase',
-                fontSize: '16px',
-                '&:hover': {
-                  color: '#ff5252',
-                  transform: 'scale(1.1)',
-                  transition: 'transform 0.2s ease-in-out'
-                }
-              }}
+              variant="outlined"
+              sx={actionButtonStyle}
             >
               Logout
             </Button>
@@ -142,25 +77,49 @@ const Header = () => {
             <Button
               onClick={handleLogin}
               color="primary"
-              variant='contained'
-              sx={{
-                fontWeight: 'bold',
-                textTransform: 'uppercase',
-                fontSize: '16px',
-                '&:hover': {
-                  transform: 'scale(1.1)',
-                  transition: 'transform 0.2s ease-in-out'
-                }
-              }}
+              variant="contained"
+              sx={actionButtonStyle}
             >
               Iniciar sesión
             </Button>
           )}
-
         </Box>
       </Toolbar>
     </AppBar>
   );
+};
+
+// COMPONENTE REUTILIZABLE PARA NAVEGACIÓN
+const NavButton = ({ to, text }) => (
+  <Button
+    component={Link}
+    to={to}
+    color="inherit"
+    sx={{
+      fontWeight: 'bold',
+      textTransform: 'uppercase',
+      fontSize: '16px',
+      letterSpacing: 1,
+      transition: 'all 0.2s ease-in-out',
+      '&:hover': {
+        color: '#ff9800',
+        transform: 'scale(1.08)',
+      }
+    }}
+  >
+    {text}
+  </Button>
+);
+
+// ESTILO COMÚN PARA BOTONES DE LOGIN / LOGOUT
+const actionButtonStyle = {
+  fontWeight: 'bold',
+  textTransform: 'uppercase',
+  fontSize: '16px',
+  transition: 'all 0.2s ease-in-out',
+  '&:hover': {
+    transform: 'scale(1.08)',
+  }
 };
 
 export default Header;
