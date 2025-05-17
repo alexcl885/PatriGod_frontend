@@ -5,12 +5,13 @@ import { UserContext } from '../../contexto/UserContext';
 import { clearToken } from '../../servicios/auth';
 
 const Header = () => {
-  const { token, setToken, user } = useContext(UserContext);
+  const { token, setToken, user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
     clearToken();
     setToken(null);
+    setUser(null); 
     navigate('/');
   };
 

@@ -20,11 +20,14 @@ import AddNewMonumentoPage from './paginas/AddNewMonumentoPage'
 import AddNewEventoPage from './paginas/AddNewEventoPage'
 import AddNewComidaPage from './paginas/AddNewComidaPage'
 import DetallesUsuarioPage from './paginas/DetallesUsuarioPage'
+import EnviarEmailUsuarios from './componentes/EnviarEmailUsuarios/EnviarEmailUsuarios'
+import ErrorPage from './paginas/ErrorPage'
 
 const router = createBrowserRouter([
   {
     path:"/",
         element:<Layout/>,
+        errorElement: <ErrorPage/>,
         children:[
           {
             index:true,
@@ -97,6 +100,10 @@ const router = createBrowserRouter([
           {
             path:"/usuarios",
             element:<GestionUsuariosPage/>,
+          },
+          {
+            path:"/actualizacionPatrigod",
+            element:<EnviarEmailUsuarios/>,
           }
         ]
   }

@@ -14,6 +14,7 @@ import {
   InputAdornment
 } from '@mui/material';
 import { MailOutline, Language, Public } from '@mui/icons-material';
+import { Link } from 'react-router-dom';
 
 const valores = [
   {
@@ -101,34 +102,24 @@ const Acerca = () => {
 
         <Divider sx={{ bgcolor: 'grey.300', mb: 8 }} />
 
-        {/* Call to Action + Newsletter */}
-        <Stack alignItems="center" spacing={3} mb={10}>
-          <Typography variant="h4" gutterBottom sx={{ fontWeight: 600 }}>
-            ¡Lanzamiento Global! Únete a la comunidad.
+        {/* Compromisos PatriGod */}
+        <Stack alignItems="center" spacing={3} mb={10} sx={{ px: 2 }}>
+          <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, maxWidth: 600, textAlign: 'center' }}>
+            Nuestros compromisos contigo y el patrimonio
           </Typography>
           <Typography variant="subtitle1" color="text.secondary" sx={{ maxWidth: 600, textAlign: 'center' }}>
-            Suscríbete para recibir actualizaciones exclusivas y explorar primero nuestras futuras funcionalidades.
+            En PatriGod no solo compartimos historia, sino que protegemos y celebramos la riqueza cultural de cada ciudad.
+            Nos comprometemos a ofrecerte datos veraces, una experiencia interactiva y promover el turismo responsable.
+            Juntos, construimos un futuro donde el patrimonio vive en cada explorador.
           </Typography>
-          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', justifyContent: 'center' }}>
-            <TextField
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Tu correo electrónico"
-              variant="outlined"
-              sx={{ width: { xs: '100%', sm: 300 } }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <MailOutline />
-                  </InputAdornment>
-                ),
-              }}
-            />
-            <Button variant="contained" size="large" onClick={handleSubscribe} sx={{ px: 4 }}>
-              Suscribirse
+          <Link to="/login" style={{ textDecoration: 'none' }}>
+            <Button variant="outlined" size="large" sx={{ mt: 2, px: 5 }}>
+              Únete a nuestra misión
             </Button>
-          </Box>
+          </Link>
         </Stack>
+
+
 
         <Divider sx={{ bgcolor: 'grey.300', mb: 8 }} />
 

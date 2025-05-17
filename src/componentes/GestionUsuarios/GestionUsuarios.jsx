@@ -1,18 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Container,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  Avatar,
-  Chip,
-  CircularProgress,
-  Box,
-  IconButton,
-  Tooltip,
-  CardHeader,
-  TextField
+  Container, Typography, Grid, Card, CardContent, Avatar, Chip, CircularProgress,
+  Box, IconButton, Tooltip, CardHeader, TextField, Pagination
 } from '@mui/material';
 import { ToggleOn, ToggleOff, Person } from '@mui/icons-material';
 import { pink, lightGreen, deepOrange, blueGrey } from '@mui/material/colors';
@@ -22,21 +11,22 @@ const GestionUsuarios = () => {
   const [loading, setLoading] = useState(true);
   const [accionEnProgreso, setAccionEnProgreso] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
-
-  const fetchUsuarios = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/api/admin/usuario');
-      if (!response.ok) throw new Error('Error al obtener los usuarios');
-      const data = await response.json();
-      setUsuarios(data);
-    } catch (error) {
-      console.error('Error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [pagina, setPagina] = useState(1);
+  const usuariosPorPagina = 6;
 
   useEffect(() => {
+    const fetchUsuarios = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/admin/usuario');
+        if (!response.ok) throw new Error('Error al obtener los usuarios');
+        const data = await response.json();
+        setUsuarios(data);
+      } catch (error) {
+        console.error('Error:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchUsuarios();
   }, []);
 
@@ -65,6 +55,16 @@ const GestionUsuarios = () => {
     usuario.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const totalPaginas = Math.ceil(usuariosFiltrados.length / usuariosPorPagina);
+  const usuariosEnPagina = usuariosFiltrados.slice(
+    (pagina - 1) * usuariosPorPagina,
+    pagina * usuariosPorPagina
+  );
+
+  const handleChangePagina = (_, value) => {
+    setPagina(value);
+  };
+
   return (
     <Container maxWidth="xl" sx={{ mt: 4 }}>
       <Typography variant="h4" gutterBottom sx={{ color: pink[100], fontWeight: 'bold' }}>
@@ -77,7 +77,10 @@ const GestionUsuarios = () => {
         fullWidth
         sx={{ mb: 4, backgroundColor: '#fff', borderRadius: 2 }}
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+          setPagina(1); // reiniciar a la primera página al buscar
+        }}
       />
 
       {loading ? (
@@ -85,81 +88,102 @@ const GestionUsuarios = () => {
           <CircularProgress />
         </Box>
       ) : (
-        <Grid container spacing={3} sx={{ mt: 2 }}>
-          {usuariosFiltrados.map((usuario) => (
-            <Grid item xs={12} sm={6} md={4} key={usuario.id}>
-              <Card
-                sx={{
-                  background: 'linear-gradient(135deg, #2c2c54 0%, #4b6584 100%)',
-                  color: 'white',
-                  borderRadius: 4,
-                  transition: 'transform 0.25s ease-in-out',
-                  '&:hover': {
-                    transform: 'scale(1.03)',
-                    boxShadow: '0 10px 25px rgba(0,0,0,0.4)',
-                  },
-                }}
-              >
-                <CardHeader
-                  avatar={<Avatar sx={{ bgcolor: deepOrange[400] }}><Person /></Avatar>}
-                  title={<Typography variant="h6" color="white">{usuario.username}</Typography>}
-                  subheader={<Typography variant="caption" color={blueGrey[200]}>ID: {usuario.id}</Typography>}
-                />
-                <CardContent>
-                  <Typography variant="body2" sx={{ color: pink[100] }}>
-                    <strong>Email:</strong> {usuario.email}
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: pink[100], mt: 1 }}>
-                    <strong>Rol:</strong>{' '}
-                    <Chip
-                      label={usuario.tipo}
-                      size="small"
-                      sx={{
-                        backgroundColor: usuario.tipo === 'ADMINISTRADOR' ? '#d500f9' : '#2979ff',
-                        color: 'white',
-                        ml: 1
-                      }}
-                    />
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: pink[100], mt: 1 }}>
-                    <strong>Estado:</strong>{' '}
-                    <Chip
-                      label={usuario.activo ? 'Activo' : 'Inactivo'}
-                      sx={{
-                        backgroundColor: usuario.activo ? lightGreen[500] : pink[500],
-                        color: 'white',
-                        ml: 1
-                      }}
-                      size="small"
-                    />
-                  </Typography>
-                  <Typography variant="body2" sx={{ color: pink[100], mt: 1 }}>
-                    <strong>Fecha de creación:</strong> {new Date(usuario.fechaCreacion).toLocaleString()}
-                  </Typography>
+        <>
+          <Grid container spacing={4} justifyContent="center" sx={{ mt: 2 }}>
+            {usuariosEnPagina.map((usuario) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={usuario.id}>
+                <Card
+                  sx={{
+                    background: 'linear-gradient(135deg, #2c2c54 0%, #4b6584 100%)',
+                    color: 'white',
+                    borderRadius: 4,
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    transition: 'transform 0.25s ease-in-out',
+                    '&:hover': {
+                      transform: 'scale(1.03)',
+                      boxShadow: '0 10px 25px rgba(0,0,0,0.4)',
+                    },
+                  }}
+                >
+                  <CardHeader
+                    avatar={<Avatar sx={{ bgcolor: deepOrange[400] }}><Person /></Avatar>}
+                    title={<Typography variant="h6" color="white">{usuario.username}</Typography>}
+                    subheader={<Typography variant="caption" color={blueGrey[200]}>ID: {usuario.id}</Typography>}
+                  />
+                  <CardContent>
+                    <Typography variant="body2" sx={{ color: pink[100] }}>
+                      <strong>Email:</strong> {usuario.email}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: pink[100], mt: 1 }}>
+                      <strong>Rol:</strong>{' '}
+                      <Chip
+                        label={usuario.tipo}
+                        size="small"
+                        sx={{
+                          backgroundColor: usuario.tipo === 'ADMINISTRADOR' ? '#d500f9' : '#2979ff',
+                          color: 'white',
+                          ml: 1
+                        }}
+                      />
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: pink[100], mt: 1 }}>
+                      <strong>Estado:</strong>{' '}
+                      <Chip
+                        label={usuario.activo ? 'Activo' : 'Inactivo'}
+                        sx={{
+                          backgroundColor: usuario.activo ? lightGreen[500] : pink[500],
+                          color: 'white',
+                          ml: 1
+                        }}
+                        size="small"
+                      />
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: pink[100], mt: 1 }}>
+                      <strong>Fecha de creación:</strong> {new Date(usuario.fechaCreacion).toLocaleString()}
+                    </Typography>
 
-                  <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-                    <Tooltip title={usuario.activo ? 'Desactivar usuario' : 'Activar usuario'}>
-                      <span>
-                        <IconButton
-                          onClick={() => cambiarEstadoUsuario(usuario.id, !usuario.activo)}
-                          disabled={accionEnProgreso === usuario.id}
-                          sx={{
-                            color: usuario.activo ? lightGreen[300] : pink[300],
-                            '&:hover': {
-                              color: usuario.activo ? lightGreen[100] : pink[100]
-                            }
-                          }}
-                        >
-                          {usuario.activo ? <ToggleOff /> : <ToggleOn />}
-                        </IconButton>
-                      </span>
-                    </Tooltip>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
+                      <Tooltip title={usuario.activo ? 'Desactivar usuario' : 'Activar usuario'}>
+                        <span>
+                          <IconButton
+                            onClick={() => cambiarEstadoUsuario(usuario.id, !usuario.activo)}
+                            disabled={accionEnProgreso === usuario.id}
+                            sx={{
+                              color: usuario.activo ? lightGreen[300] : pink[300],
+                              '&:hover': {
+                                color: usuario.activo ? lightGreen[100] : pink[100]
+                              }
+                            }}
+                          >
+                            {usuario.activo ? <ToggleOff /> : <ToggleOn />}
+                          </IconButton>
+                        </span>
+                      </Tooltip>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+
+          {/* Controles de paginación */}
+          {totalPaginas > 1 && (
+            <Box sx={{ display: 'flex', justifyContent: 'center', mt: 6, mb: 6 }}>
+              <Pagination
+                count={totalPaginas}
+                page={pagina}
+                onChange={handleChangePagina}
+                color="primary"
+                variant="outlined"
+                shape="rounded"
+                size="large"
+              />
+            </Box>
+          )}
+        </>
       )}
     </Container>
   );
