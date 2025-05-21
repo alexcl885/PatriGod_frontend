@@ -9,11 +9,9 @@ import {
   CardContent,
   Button,
   Stack,
-  Divider,
-  TextField,
-  InputAdornment
+  Divider
 } from '@mui/material';
-import { MailOutline, Language, Public } from '@mui/icons-material';
+import { Language, Public } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 
 const valores = [
@@ -85,9 +83,30 @@ const Acerca = () => {
               md={4}
               sx={{ display: 'flex', justifyContent: 'center' }}
             >
-              <Card sx={{ width: 300, p: 4, boxShadow: 6, borderRadius: 4, '&:hover': { boxShadow: 10, transform: 'translateY(-6px)', transition: '0.3s' } }}>
+              <Card
+                sx={{
+                  width: 300,
+                  p: 4,
+                  boxShadow: 6,
+                  borderRadius: 4,
+                  '&:hover': {
+                    boxShadow: 10,
+                    transform: 'translateY(-6px)',
+                    transition: '0.3s',
+                  },
+                }}
+              >
                 <CardContent sx={{ textAlign: 'center' }}>
-                  <Box mb={2}>{item.icon}</Box>
+                  <Box
+                    mb={2}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                  >
+                    {item.icon}
+                  </Box>
                   <Typography variant="h5" gutterBottom sx={{ fontWeight: 700 }}>
                     {item.title}
                   </Typography>
@@ -99,6 +118,7 @@ const Acerca = () => {
             </Grid>
           ))}
         </Grid>
+
 
         <Divider sx={{ bgcolor: 'grey.300', mb: 8 }} />
 
