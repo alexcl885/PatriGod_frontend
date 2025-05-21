@@ -5,17 +5,19 @@ import {
 } from '@mui/material';
 import { AddLocationAlt } from '@mui/icons-material';
 import api from '../../servicios/api';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const steps = ['Información General', 'Historia y Arquitectura', 'Ubicación y Visitas', 'Curiosidades'];
-
 
 const AddNewMonumento = () => {
   const [activeStep, setActiveStep] = useState(0);
   const { id } = useParams();
+  const navigate = useNavigate();
   const initialFormData = {
     type: "monumento",
-    ciudad: 2,
+    ciudad: {
+      id: parseInt(id)
+    },
     nombre: '',
     descripcion: '',
     imagen: '',
@@ -29,6 +31,7 @@ const AddNewMonumento = () => {
     materialesPrincipales: '',
     curiosidades: ''
   };
+
   const [formData, setFormData] = useState(initialFormData);
 
   const handleChange = (e) => {
@@ -49,22 +52,17 @@ const AddNewMonumento = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const dataParaEnviar = {
-      ...formData,
-      ciudad: typeof formData.ciudad === 'object' ? formData.ciudad.id : formData.ciudad
-    };
-  
+
     try {
-      const envioDatos = await api.post("/monumento", dataParaEnviar);
-      console.log("Monumento creado con éxito");
+      const envioDatos = await api.post("/monumento", formData);
+      console.log("Monumento creado con éxito:", envioDatos.data);
+      navigate(`/ciudad/${id}`)
     } catch (error) {
       console.error("Error al guardar:", error.response?.data || error.message);
     }
   };
-  
 
-  const isLastStep = activeStep === steps.length - 1;
+  const isLastStep = activeStep === 4;
 
   const renderStepContent = (step) => {
     switch (step) {
@@ -195,7 +193,7 @@ const AddNewMonumento = () => {
                 Guardar Monumento
               </Button>
             ) : (
-              <Button variant="contained" onClick={handleNext}>
+              <Button variant="contained" onClick={handleNext} type="button">
                 Siguiente
               </Button>
             )}
