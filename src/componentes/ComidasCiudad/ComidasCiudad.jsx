@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Grid,
   Card,
@@ -9,8 +9,31 @@ import {
   Button
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import api from '../../servicios/api';
+import { UserContext } from '../../contexto/UserContext';
 
 const ComidasCiudad = ({ comidas }) => {
+  const [listaComidas, setListaComidas] = useState([]);
+  const { user } = useContext(UserContext)
+
+  useEffect(() => {
+    setListaComidas(comidas);
+  }, [listaComidas]);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("¿Estás seguro de que quieres eliminar este monumento?")) return;
+
+    try {
+      const response = await api.delete(`/comida/${id}`);
+
+
+      console.log(`Monumento con ID ${id} eliminado correctamente.`);
+
+    } catch (error) {
+      console.error('Error de red al eliminar el monumento:', error);
+    }
+  };
+
   if (!comidas || comidas.length === 0) {
     return (
       <Typography variant="body1" color="text.secondary" align="center">
@@ -27,7 +50,7 @@ const ComidasCiudad = ({ comidas }) => {
             <CardMedia
               component="img"
               height="180"
-              image={comida.imagen} // Asegúrate de que esta ruta coincida con donde guardas las imágenes
+              image={comida.imagen} 
               alt={comida.nombre}
             />
             <CardContent sx={{ flexGrow: 1 }}>
@@ -46,9 +69,17 @@ const ComidasCiudad = ({ comidas }) => {
                 size="small"
               >
                 <Link to={`http://localhost:5173/ciudad/${comida.ciudad.id}/comidas/${comida.id}`}>
-                Ver más
+                  Ver más
                 </Link>
               </Button>
+              {user.tipo == "ADMINISTRADOR" && <Button
+                size="small"
+                color="error"
+                variant="outlined"
+                onClick={() => handleDelete(parseInt(comida.id))}
+              >
+                Eliminar
+              </Button>}
             </CardActions>
           </Card>
         </Grid>

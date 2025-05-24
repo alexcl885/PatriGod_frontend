@@ -28,15 +28,14 @@ const ComidasCiudadPage = () => {
       <Container maxWidth="md">
         <Box
           sx={{
-            padding: '30px',
-            borderRadius: '20px',
-            boxShadow: '0px 8px 30px rgba(0,0,0,0.2)',
-            marginTop: 5,
-            marginBottom: 4,
-            textAlign: 'center',
-            animation: 'fadeIn 1s ease-in-out',
-            backgroundColor: '#1976d2',
-          }}
+          padding: '30px',
+          borderRadius: '20px',
+          boxShadow: '0px 8px 30px rgba(0,0,0,0.2)',
+          marginTop: 5,
+          marginBottom: 4,
+          textAlign: 'center',
+          animation: 'fadeIn 1s ease-in-out'
+        }}
         >
           <Typography
             variant="h2"

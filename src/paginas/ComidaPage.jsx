@@ -110,7 +110,7 @@ const ComidaPage = () => {
           mb: 4,
           textAlign: "center",
           fontWeight: 500,
-          color: "#444",
+          color: "white",
         }}
       >
         Tu puntuación: {valoracion || "Ninguna"}

@@ -49,7 +49,6 @@ const RankingPage = () => {
           {/* Botón a Artículos */}
           <Button
             component={Link}
-            to="/articulos"
             variant="contained"
             startIcon={<ArticleIcon />}
             sx={{

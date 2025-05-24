@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Grid,
   Card,
@@ -9,8 +9,31 @@ import {
   Button
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import api from '../../servicios/api';
+import { UserContext } from '../../contexto/UserContext';
 
 const EventosCiudad = ({ eventos }) => {
+  const [listaEventos, setListaEventos] = useState([]);
+  const { user } = useContext(UserContext)
+
+  useEffect(() => {
+    setListaEventos(eventos);
+  }, [eventos]);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("¿Estás seguro de que quieres eliminar este monumento?")) return;
+
+    try {
+      const response = await api.delete(`/evento/${id}`);
+
+
+      setListaEventos((prev) => prev.filter((m) => m.id !== id));
+      console.log(`Monumento con ID ${id} eliminado correctamente.`);
+
+    } catch (error) {
+      console.error('Error de red al eliminar el monumento:', error);
+    }
+  };
   if (!eventos || eventos.length === 0) {
     return (
       <Typography variant="body1" color="text.secondary" align="center">
@@ -49,9 +72,17 @@ const EventosCiudad = ({ eventos }) => {
                 size="small"
               >
                 <Link to={`http://localhost:5173/ciudad/${evento.ciudad.id}/eventos/${evento.id}`}>
-                Ver más
+                  Ver más
                 </Link>
               </Button>
+              {user.tipo == "ADMINISTRADOR" && <Button
+                size="small"
+                color="error"
+                variant="outlined"
+                onClick={() => handleDelete(parseInt(evento.id))}
+              >
+                Eliminar
+              </Button>}
             </CardActions>
           </Card>
         </Grid>

@@ -75,7 +75,7 @@ export default function SignInCard() {
       
       navigate('/login'); // Redirige al login si todo va bien
     } catch (err) {
-      console.error(err);
+      navigate('/login');
       setError('Error al registrar. El nombre o email pueden estar en uso.');
     }
   };

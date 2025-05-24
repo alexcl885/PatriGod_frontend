@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardMedia, CardContent, Typography, Grid, Box, Button } from '@mui/material';
-import { Link } from 'react-router-dom';
-import ArticleIcon from '@mui/icons-material/Article';
 
 const Ranking = () => {
   const [ciudades, setCiudades] = useState([]);
@@ -25,7 +23,7 @@ const Ranking = () => {
         justifyContent: 'flex-start',
         paddingTop: 4,
         backgroundColor: '#f9f9f9',
-        position: 'relative', // necesario para posicionar el botón
+        position: 'relative', 
       }}
     >
       <Grid container spacing={10} justifyContent="center" maxWidth="md">
