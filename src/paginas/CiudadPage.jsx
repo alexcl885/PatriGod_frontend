@@ -11,6 +11,7 @@ import {
   Modal,
   Backdrop,
   Fade,
+  Tooltip
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Articulos from '../componentes/Articulos/Articulos';
@@ -22,44 +23,38 @@ const CiudadPage = () => {
   const { user } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
-  const {id} = useParams();
+  const { id } = useParams();
 
   const handleCloseModal = () => setModalOpen(false);
 
-
-
   const handleCrearArticulo = () => {
-    // Aquí navegas o abres modal (ej: navigate('/admin/crear'))
     setModalOpen(true);
-    console.log('Crear artículo');
   };
 
-  const seleccionarTipo = (tipo) =>{
-    console.log(tipo);
-    if (tipo == "monumento"){
-      navigate(`/ciudad/${id}/add/${tipo}`)
-    }
-    if (tipo == "comida"){
-      navigate(`/ciudad/${id}/add/${tipo}`)
-    }
-    if (tipo == "evento"){
-      navigate(`/ciudad/${id}/add/${tipo}`)
-    } 
-
-  }
-
+  const seleccionarTipo = (tipo) => {
+    navigate(`/ciudad/${id}/add/${tipo}`);
+  };
 
   return (
-    <Box component="main" sx={{ backgroundColor: '#0a192f', minHeight: '100vh' }}>
+    <Box
+      component="main"
+      sx={{
+        background: 'linear-gradient(135deg, #0a192f 0%, #0d253f 100%)',
+        minHeight: '100vh',
+        pb: 0
+      }}
+    >
       {/* Detalle de Ciudad */}
       <Container maxWidth="md" sx={{ py: 8 }}>
         <Paper
-          elevation={8}
+          elevation={12}
           sx={{
-            borderRadius: 4,
+            borderRadius: 5,
             overflow: 'hidden',
-            backgroundColor: '#0d253f',
+            background: 'linear-gradient(120deg, #0d253f 60%, #1976d2 100%)',
             color: '#fff',
+            boxShadow: '0 8px 32px 0 rgba(44,62,80,0.18)',
+            p: { xs: 2, md: 4 }
           }}
         >
           <Ciudad />
@@ -70,26 +65,31 @@ const CiudadPage = () => {
       {user?.tipo === 'ADMINISTRADOR' && (
         <>
           <Container maxWidth="md" sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
-            <Button
-              variant="contained"
-              color="secondary"
-              startIcon={<AddCircleOutlineIcon />}
-              onClick={handleCrearArticulo}
-              sx={{
-                background: 'linear-gradient(45deg, #1db954, #1ed760)',
-                color: '#fff',
-                fontWeight: 'bold',
-                px: 3,
-                py: 1.5,
-                borderRadius: 3,
-                boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
-                '&:hover': {
-                  background: 'linear-gradient(45deg, #1aa34a, #1ed760)',
-                },
-              }}
-            >
-              Añadir artículo
-            </Button>
+            <Tooltip title="Añadir nuevo artículo a la ciudad" arrow>
+              <Button
+                variant="contained"
+                color="secondary"
+                startIcon={<AddCircleOutlineIcon />}
+                onClick={handleCrearArticulo}
+                sx={{
+                  background: 'linear-gradient(90deg, #1db954 60%, #1976d2 100%)',
+                  color: '#fff',
+                  fontWeight: 'bold',
+                  px: 4,
+                  py: 1.7,
+                  borderRadius: 4,
+                  fontSize: '1.1rem',
+                  boxShadow: '0 4px 18px rgba(25,118,210,0.25)',
+                  letterSpacing: 1,
+                  '&:hover': {
+                    background: 'linear-gradient(90deg, #1976d2 60%, #1db954 100%)',
+                    transform: 'scale(1.04)',
+                  },
+                }}
+              >
+                Añadir artículo
+              </Button>
+            </Tooltip>
           </Container>
 
           {/* Modal para selección de tipo */}
@@ -108,12 +108,14 @@ const CiudadPage = () => {
                   left: '50%',
                   transform: 'translate(-50%, -50%)',
                   width: 420,
-                  bgcolor: '#0d1b2a',
+                  bgcolor: 'background.paper',
                   borderRadius: 5,
-                  boxShadow: '0 0 20px rgba(0, 255, 255, 0.3)',
+                  boxShadow: '0 0 32px #1976d2',
                   p: 4,
                   textAlign: 'center',
                   border: '2px solid #64ffda',
+                  background: 'linear-gradient(120deg, #0d253f 60%, #1976d2 100%)',
+                  color: '#fff'
                 }}
               >
                 <Typography
@@ -127,59 +129,62 @@ const CiudadPage = () => {
                 >
                   ¿Qué tipo de artículo quieres crear?
                 </Typography>
-
                 <Stack spacing={2}>
                   <Button
                     variant="contained"
                     onClick={() => seleccionarTipo('monumento')}
                     sx={{
-                      background: 'linear-gradient(45deg, #00bcd4, #64ffda)',
-                      color: '#000',
+                      background: 'linear-gradient(90deg, #00bcd4 60%, #1976d2 100%)',
+                      color: '#fff',
                       fontWeight: 'bold',
                       py: 1.5,
                       borderRadius: 2,
-                      boxShadow: '0 0 12px #00bcd4',
+                      fontSize: '1.08rem',
+                      boxShadow: '0 0 16px #00bcd4',
                       '&:hover': {
-                        background: 'linear-gradient(45deg, #0097a7, #1de9b6)',
-                        boxShadow: '0 0 18px #1de9b6',
+                        background: 'linear-gradient(90deg, #1976d2 60%, #00bcd4 100%)',
+                        boxShadow: '0 0 22px #1976d2',
+                        transform: 'scale(1.04)'
                       },
                     }}
                   >
                     🏛 Monumento
                   </Button>
-
                   <Button
                     variant="contained"
                     onClick={() => seleccionarTipo('evento')}
                     sx={{
-                      background: 'linear-gradient(45deg, #ff4081, #f50057)',
+                      background: 'linear-gradient(90deg, #ec407a 60%, #1976d2 100%)',
                       color: '#fff',
                       fontWeight: 'bold',
                       py: 1.5,
                       borderRadius: 2,
-                      boxShadow: '0 0 12px #f50057',
+                      fontSize: '1.08rem',
+                      boxShadow: '0 0 16px #ec407a',
                       '&:hover': {
-                        background: 'linear-gradient(45deg, #c51162, #ff4081)',
-                        boxShadow: '0 0 18px #ff4081',
+                        background: 'linear-gradient(90deg, #1976d2 60%, #ec407a 100%)',
+                        boxShadow: '0 0 22px #ec407a',
+                        transform: 'scale(1.04)'
                       },
                     }}
                   >
                     🎉 Evento
                   </Button>
-
                   <Button
                     variant="contained"
                     onClick={() => seleccionarTipo('comida')}
                     sx={{
-                      background: 'linear-gradient(45deg, #ffb300, #ffc107)',
-                      color: '#000',
+                      background: 'linear-gradient(90deg, #ffb300 60%, #1976d2 100%)',
+                      color: '#fff',
                       fontWeight: 'bold',
                       py: 1.5,
                       borderRadius: 2,
-                      boxShadow: '0 0 12px #ffc107',
+                      fontSize: '1.08rem',
+                      boxShadow: '0 0 16px #ffb300',
                       '&:hover': {
-                        background: 'linear-gradient(45deg, #ffa000, #ffca28)',
-                        boxShadow: '0 0 18px #ffca28',
+                        background: 'linear-gradient(90deg, #1976d2 60%, #ffb300 100%)',
+                        boxShadow: '0 0 22px #ffb300',
+                        transform: 'scale(1.04)'
                       },
                     }}
                   >
@@ -189,11 +194,8 @@ const CiudadPage = () => {
               </Box>
             </Fade>
           </Modal>
-
         </>
       )}
-
-
 
       <Divider
         sx={{
@@ -216,18 +218,23 @@ const CiudadPage = () => {
             variant="h4"
             align="center"
             gutterBottom
-            sx={{ fontWeight: 700, mb: 1, color: '#ffffff' }}
+            sx={{
+              fontWeight: 900,
+              mb: 1,
+              color: '#fff',
+              letterSpacing: 1.2,
+              textShadow: '0 2px 8px #1976d2'
+            }}
           >
             Explora más sobre esta ciudad
           </Typography>
           <Typography
             variant="subtitle1"
             align="center"
-            sx={{ mb: 6, color: '#b0bec5' }}
+            sx={{ mb: 6, color: '#bbdefb', fontWeight: 500 }}
           >
             Descubre monumentos, eventos y la gastronomía local.
           </Typography>
-
           <Grid container spacing={6} justifyContent="center">
             <Articulos />
           </Grid>

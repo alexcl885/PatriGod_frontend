@@ -13,6 +13,7 @@ const ComidaPage = () => {
   const [error, setError] = useState(null);
   const [valoracion, setValoracion] = useState(0);
   const navigate = useNavigate();
+  const { token, setToken, user } = useContext(UserContext);
 
   useEffect(() => {
     const fetchComida = async () => {
@@ -45,7 +46,6 @@ const ComidaPage = () => {
   if (error) return <Typography color="error">Error: {error}</Typography>;
   if (!comida) return <Typography>No se encontró la comida.</Typography>;
 
-  const { token, setToken, user } = useContext(UserContext);
 
   const postPuntuacion = async () => {
     if (token) { //compruebo primero si el usuario esta registrado

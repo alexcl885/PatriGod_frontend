@@ -4,8 +4,8 @@ import { getToken } from "../servicios/auth";
 const UserContext = createContext()
 
 const UserProvider = ({children}) => {
-    const [user, setUser] = useState(null);
-    const [token, setToken] = useState(null);
+    const [user, setUser] = useState("");
+    const [token, setToken] = useState("");
     useEffect(() => {
         const savedToken = getToken();
         if (savedToken) {

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import {
   Card, CardContent, Typography, Avatar, Grid, Divider,
   Box, Chip, Tooltip, Fade, IconButton, useTheme,
-  TextField, Button
+  TextField, Button, Paper
 } from '@mui/material';
 import {
-  AccountCircle, Email, Lock, CalendarToday, VerifiedUser,
+  AccountCircle, Lock, CalendarToday, VerifiedUser,
   Fingerprint, Edit, VpnKey
 } from '@mui/icons-material';
 import api from '../../servicios/api';
@@ -95,34 +95,43 @@ const DetallesUsuario = ({ usuario }) => {
   };
 
   const { username, email, id, password, tipo, activo, fechaCreacion } = usuarioLocal;
-  const fechaFormateada = new Date(fechaCreacion).toLocaleString();
+  const fechaFormateada = fechaCreacion[0]+ "/" + fechaCreacion[1]+ "/" + fechaCreacion[2] ;
+
 
   return (
     <Fade in>
-      <Card
+      <Paper
+        elevation={10}
         sx={{
           maxWidth: 700,
           mx: 'auto',
-          mt: 6,
-          p: 3,
-          borderRadius: 4,
-          boxShadow: '0 8px 24px rgba(0,0,0,0.2)',
-          background: theme.palette.mode === 'dark'
-            ? theme.palette.background.paper
-            : '#f9f9f9',
+          mt: 7,
+          p: { xs: 2, md: 4 },
+          borderRadius: 5,
+          background: 'linear-gradient(120deg, #0d1b2a 0%, #1976d2 100%)',
+          boxShadow: '0 8px 32px 0 rgba(44,62,80,0.18)',
+          color: 'white'
         }}
       >
-        <CardContent>
-          <Box display="flex" justifyContent="space-between" mb={3}>
+        <CardContent sx={{ p: 0 }}>
+          <Box display="flex" justifyContent="space-between" mb={3} alignItems="center">
             <Box display="flex" alignItems="center" gap={2}>
-              <Avatar sx={{ width: 64, height: 64, bgcolor: 'primary.main' }}>
-                <AccountCircle sx={{ fontSize: 40 }} />
+              <Avatar sx={{
+                width: 72,
+                height: 72,
+                bgcolor: 'primary.main',
+                border: '3px solid #fff',
+                boxShadow: 3
+              }}>
+                <AccountCircle sx={{ fontSize: 48 }} />
               </Avatar>
               <Box>
                 {!editandoUsuario ? (
                   <>
-                    <Typography variant="h5" fontWeight="bold">{username}</Typography>
-                    <Typography variant="body2">{email}</Typography>
+                    <Typography variant="h4" fontWeight="bold" sx={{ color: '#fff', letterSpacing: 1 }}>
+                      {username}
+                    </Typography>
+                    <Typography variant="body1" sx={{ color: '#bbdefb' }}>{email}</Typography>
                   </>
                 ) : (
                   <>
@@ -131,7 +140,7 @@ const DetallesUsuario = ({ usuario }) => {
                       value={nuevoUsername}
                       onChange={(e) => setNuevoUsername(e.target.value)}
                       size="small"
-                      sx={{ mb: 1 }}
+                      sx={{ mb: 1, bgcolor: 'white', borderRadius: 2 }}
                       fullWidth
                     />
                     <TextField
@@ -139,13 +148,14 @@ const DetallesUsuario = ({ usuario }) => {
                       value={nuevoEmail}
                       onChange={(e) => setNuevoEmail(e.target.value)}
                       size="small"
+                      sx={{ bgcolor: 'white', borderRadius: 2 }}
                       fullWidth
                     />
                     <Button
                       onClick={handleGuardarUsuario}
                       variant="contained"
                       size="small"
-                      sx={{ mt: 1 }}
+                      sx={{ mt: 1, fontWeight: 700, background: 'linear-gradient(90deg, #1976d2 60%, #ec407a 100%)' }}
                     >
                       Guardar usuario
                     </Button>
@@ -155,24 +165,36 @@ const DetallesUsuario = ({ usuario }) => {
                   label={tipo}
                   color={tipo === 'ADMINISTRADOR' ? 'secondary' : 'primary'}
                   size="small"
-                  sx={{ mt: 1 }}
+                  sx={{
+                    mt: 1,
+                    fontWeight: 700,
+                    bgcolor: tipo === 'ADMINISTRADOR' ? '#ec407a' : '#1976d2',
+                    color: '#fff',
+                    letterSpacing: 1
+                  }}
                 />
               </Box>
             </Box>
-
             <Box display="flex" gap={1}>
               <Tooltip title="Editar usuario" arrow>
                 <IconButton
-                  color="primary"
+                  sx={{
+                    bgcolor: 'rgba(25,118,210,0.12)',
+                    color: '#fff',
+                    '&:hover': { bgcolor: 'primary.main', color: '#fff' }
+                  }}
                   onClick={toggleEditarUsuario}
                 >
                   <Edit />
                 </IconButton>
               </Tooltip>
-
               <Tooltip title="Cambiar contraseña" arrow>
                 <IconButton
-                  color="secondary"
+                  sx={{
+                    bgcolor: 'rgba(236,64,122,0.12)',
+                    color: '#fff',
+                    '&:hover': { bgcolor: 'secondary.main', color: '#fff' }
+                  }}
                   onClick={() => setEditandoPassword(!editandoPassword)}
                 >
                   <VpnKey />
@@ -181,37 +203,34 @@ const DetallesUsuario = ({ usuario }) => {
             </Box>
           </Box>
 
-          <Divider sx={{ mb: 3 }} />
+          <Divider sx={{ mb: 3, bgcolor: '#1976d2', opacity: 0.5 }} />
 
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <Box display="flex" alignItems="center" gap={1}>
-                <Fingerprint color="action" />
-                <Typography>ID: {id}</Typography>
+                <Fingerprint sx={{ color: '#90caf9' }} />
+                <Typography sx={{ color: '#fffde7' }}>ID: {id}</Typography>
               </Box>
             </Grid>
-
             <Grid item xs={12} sm={6}>
               <Box display="flex" alignItems="center" gap={1}>
-                <VerifiedUser color={activo ? 'success' : 'disabled'} />
-                <Typography color={activo ? 'success.main' : 'text.secondary'}>
+                <VerifiedUser sx={{ color: activo ? '#43a047' : '#bdbdbd' }} />
+                <Typography sx={{ color: activo ? '#43a047' : '#bdbdbd', fontWeight: 700 }}>
                   {activo ? 'Activo' : 'Inactivo'}
                 </Typography>
               </Box>
             </Grid>
-
             <Grid item xs={12}>
               <Box display="flex" alignItems="center" gap={1}>
-                <CalendarToday color="action" />
-                <Typography>Creado el {fechaFormateada}</Typography>
+                <CalendarToday sx={{ color: '#90caf9' }} />
+                <Typography sx={{ color: '#fffde7' }}>Creado el {fechaFormateada}</Typography>
               </Box>
             </Grid>
-
             <Grid item xs={12}>
               {!editandoPassword ? (
                 <Box display="flex" alignItems="center" gap={1}>
-                  <Lock color="action" />
-                  <Typography color="text.secondary">
+                  <Lock sx={{ color: '#90caf9' }} />
+                  <Typography color="text.secondary" sx={{ color: '#fffde7' }}>
                     {password?.replace(/./g, '•')}
                   </Typography>
                 </Box>
@@ -224,21 +243,48 @@ const DetallesUsuario = ({ usuario }) => {
                     onChange={(e) => setNuevaPassword(e.target.value)}
                     size="small"
                     fullWidth
+                    sx={{ bgcolor: 'white', borderRadius: 2 }}
                   />
                   <Button
                     variant="contained"
                     size="small"
                     onClick={handleGuardarPassword}
                     disabled={!nuevaPassword}
+                    sx={{
+                      mt: 1,
+                      fontWeight: 700,
+                      background: 'linear-gradient(90deg, #1976d2 60%, #ec407a 100%)'
+                    }}
                   >
                     Guardar contraseña
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => {
+                      setEditandoPassword(false);
+                      setNuevaPassword('');
+                    }}
+                    sx={{
+                      mt: 1,
+                      fontWeight: 700,
+                      color: '#fff',
+                      borderColor: '#fff',
+                      '&:hover': {
+                        borderColor: '#ec407a',
+                        color: '#ec407a',
+                        background: 'rgba(255,255,255,0.08)'
+                      }
+                    }}
+                  >
+                    Cancelar
                   </Button>
                 </Box>
               )}
             </Grid>
           </Grid>
         </CardContent>
-      </Card>
+      </Paper>
     </Fade>
   );
 };

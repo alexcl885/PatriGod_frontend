@@ -12,7 +12,7 @@ const GestionUsuarios = () => {
   const [accionEnProgreso, setAccionEnProgreso] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [pagina, setPagina] = useState(1);
-  const usuariosPorPagina = 6;
+  const usuariosPorPagina = 5;
 
   useEffect(() => {
     const fetchUsuarios = async () => {
