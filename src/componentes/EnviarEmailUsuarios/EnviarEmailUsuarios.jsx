@@ -19,7 +19,7 @@ const EnviarEmailUsuarios = () => {
 
     try {
       setEnviando(true);
-      const response = await fetch('http://localhost:8080/api/email/actualizacion', {
+      const response = await fetch('http://localhost:8080/api/email/admin/actualizacion', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ updateMessage: mensaje })

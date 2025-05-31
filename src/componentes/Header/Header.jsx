@@ -11,7 +11,7 @@ const Header = () => {
   const handleLogout = () => {
     clearToken();
     setToken(null);
-    setUser(null); 
+    setUser(""); 
     navigate('/');
   };
 

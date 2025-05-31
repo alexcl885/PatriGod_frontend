@@ -22,7 +22,7 @@ const RankingEventos = () => {
   useEffect(() => {
     const fetchRanking = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/ciudad/rankEvento');
+        const response = await fetch('http://localhost:8080/api/ciudad/rank/evento');
         const data = await response.json();
         setRanking(data);
       } catch (error) {

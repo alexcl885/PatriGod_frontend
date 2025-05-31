@@ -22,7 +22,7 @@ const RankingMonumentos = () => {
   useEffect(() => {
     const fetchRanking = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/ciudad/rankMonumento');
+        const response = await fetch('http://localhost:8080/api/ciudad/rank/monumento');
         const data = await response.json();
         setRanking(data);
       } catch (error) {

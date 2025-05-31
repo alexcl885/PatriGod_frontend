@@ -22,7 +22,7 @@ const RankingComidas = () => {
   useEffect(() => {
     const fetchRanking = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/ciudad/rankComida');
+        const response = await fetch('http://localhost:8080/api/ciudad/rank/comida');
         const data = await response.json();
         setRanking(data);
       } catch (error) {

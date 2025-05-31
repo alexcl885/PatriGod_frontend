@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import {
   Box,
   IconButton,
@@ -18,6 +18,9 @@ import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import PersonIcon from '@mui/icons-material/Person';
 import api from '../../servicios/api';
+import { useNavigate } from 'react-router-dom';
+import { UserContext } from '../../contexto/UserContext';
+import { toast, ToastContainer } from 'react-toastify';
 
 const AVATAR_USER = <Avatar sx={{ bgcolor: 'primary.main', width: 32, height: 32 }}><PersonIcon /></Avatar>;
 const AVATAR_BOT = <Avatar sx={{ bgcolor: 'secondary.main', width: 32, height: 32 }}><SmartToyIcon /></Avatar>;
@@ -36,6 +39,8 @@ const ChatSidebar = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const chatEndRef = useRef(null);
+  const navigate = useNavigate();
+  const { user } = useContext(UserContext);
 
   const toggleDrawer = () => setOpen((prev) => !prev);
 
@@ -46,8 +51,18 @@ const ChatSidebar = () => {
   }, [messages, open, loading]);
 
   const handleSend = async () => {
+    if (!user) {
+      toast.error('Debes iniciar sesión para usar el chat.');
+
+      setTimeout(() => {
+        setError('');
+        setOpen(false);
+        navigate('/login');
+      }, 1200);
+      return;
+    }
     if (!prompt.trim() || loading) return;
-    setError('');
+    
     const userMsg = { role: 'user', content: prompt };
     setMessages((prev) => [...prev, userMsg]);
     setPrompt('');
@@ -88,6 +103,7 @@ const ChatSidebar = () => {
 
   return (
     <>
+      <ToastContainer position="top-right" autoClose={3000} />
       <Tooltip title="Abrir chat IA" arrow>
         <IconButton
           onClick={toggleDrawer}
