@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import { ToggleOn, ToggleOff, Person } from '@mui/icons-material';
 import { pink, lightGreen, deepOrange, blueGrey } from '@mui/material/colors';
+import api from '../../servicios/api';
 
 const GestionUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -17,12 +18,11 @@ const GestionUsuarios = () => {
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/admin/usuario');
-        if (!response.ok) throw new Error('Error al obtener los usuarios');
-        const data = await response.json();
-        setUsuarios(data);
+        const response = await api.get('http://localhost:8080/api/admin/usuario');
+        // Los datos vienen en response.data (array de usuarios)
+        setUsuarios(response.data);
       } catch (error) {
-        console.error('Error:', error);
+        console.error('Error al obtener los usuarios:', error);
       } finally {
         setLoading(false);
       }
@@ -33,14 +33,7 @@ const GestionUsuarios = () => {
   const cambiarEstadoUsuario = async (id, nuevoEstado) => {
     setAccionEnProgreso(id);
     try {
-      const response = await fetch(`http://localhost:8080/api/admin/usuario/${id}/estado`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ activo: nuevoEstado }),
-      });
-
-      if (!response.ok) throw new Error('Error al actualizar estado del usuario');
-
+      await api.put(`http://localhost:8080/api/admin/usuario/${id}/estado`, { activo: nuevoEstado });
       setUsuarios((prev) =>
         prev.map((u) => (u.id === id ? { ...u, activo: nuevoEstado } : u))
       );
@@ -63,6 +56,14 @@ const GestionUsuarios = () => {
 
   const handleChangePagina = (_, value) => {
     setPagina(value);
+  };
+
+  // Cambia la visualización de la fecha para arrays tipo [2025,5,31,9,15,53]
+  const formatFecha = (fechaArr) => {
+    if (!Array.isArray(fechaArr) || fechaArr.length < 3) return '';
+    // [YYYY, MM, DD, hh, mm, ss]
+    const [y, m, d, hh = 0, mm = 0, ss = 0] = fechaArr;
+    return `${d.toString().padStart(2, '0')}/${m.toString().padStart(2, '0')}/${y} ${hh.toString().padStart(2, '0')}:${mm.toString().padStart(2, '0')}:${ss.toString().padStart(2, '0')}`;
   };
 
   return (
@@ -142,7 +143,7 @@ const GestionUsuarios = () => {
                       />
                     </Typography>
                     <Typography variant="body2" sx={{ color: pink[100], mt: 1 }}>
-                      <strong>Fecha de creación:</strong> {new Date(usuario.fechaCreacion).toLocaleString()}
+                      <strong>Fecha de creación:</strong> {formatFecha(usuario.fechaCreacion)}
                     </Typography>
 
                     <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>

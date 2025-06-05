@@ -8,7 +8,7 @@ import 'leaflet/dist/leaflet.css';
 const MapaCiudades = () => {
   const [ciudades, setCiudades] = useState([]);
   const [loading, setLoading] = useState(true);
-  const center = [40.4168, -3.7038]; // Madrid
+  const center = [40.4168, -3.7038]; 
 
   useEffect(() => {
     fetch('http://localhost:8080/api/ciudad')
@@ -33,7 +33,6 @@ const MapaCiudades = () => {
       </Box>
     );
   }
-
   return (
     <Paper
       elevation={8}

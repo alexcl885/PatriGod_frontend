@@ -3,6 +3,7 @@ import {
   Container, Typography, TextField, Button, Box, Snackbar, Alert, Paper
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
+import api from '../../servicios/api';
 
 const EnviarEmailUsuarios = () => {
   const [mensaje, setMensaje] = useState('');
@@ -19,22 +20,21 @@ const EnviarEmailUsuarios = () => {
 
     try {
       setEnviando(true);
-      const response = await fetch('http://localhost:8080/api/email/admin/actualizacion', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ updateMessage: mensaje })
+      const response = await api.post('http://localhost:8080/api/email/admin/actualizacion', {
+        updateMessage: mensaje
       });
 
-      const texto = await response.text();
+      // El backend responde con texto plano o JSON, ajusta según tu backend
+      const texto = response.data?.message || response.data || 'Mensaje enviado correctamente.';
 
-      if (response.ok) {
-        setRespuesta({ abierto: true, exito: true, mensaje: texto });
-        setMensaje('');
-      } else {
-        setRespuesta({ abierto: true, exito: false, mensaje: texto });
-      }
+      setRespuesta({ abierto: true, exito: true, mensaje: texto });
+      setMensaje('');
     } catch (error) {
-      setRespuesta({ abierto: true, exito: false, mensaje: 'Error al enviar correos.' });
+      setRespuesta({
+        abierto: true,
+        exito: false,
+        mensaje: error.response?.data?.message || 'Error al enviar correos.'
+      });
     } finally {
       setEnviando(false);
     }
