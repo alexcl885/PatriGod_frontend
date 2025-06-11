@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { Box, Typography, Rating, Button } from "@mui/material";
 import { UserContext } from "../contexto/UserContext";
 import api from "../servicios/api";
-import { ToastContainer, toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
 const MonumentoPage = () => {
@@ -69,6 +69,9 @@ const MonumentoPage = () => {
   if (!monumento) return <Typography>No se encontró el monumento.</Typography>;
 
   return (
+    <>
+    <ToastContainer position="top-right" autoClose={3000} />
+
     <Box
       sx={{
         width: "100%",
@@ -78,7 +81,6 @@ const MonumentoPage = () => {
         boxSizing: "border-box"
       }}
     >
-      <ToastContainer position="top-right" autoClose={3000} />
       
       <Monumento monumento={monumento} />
 
@@ -141,6 +143,7 @@ const MonumentoPage = () => {
         Enviar puntuación
       </Button>
     </Box>
+    </>
   );
 };
 

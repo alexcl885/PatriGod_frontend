@@ -8,6 +8,7 @@ const Layout = () => {
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       <ScrollToTop />
+
       <Header />
       <main style={{ flex: 1, padding: '20px' }}>
         <Outlet />

@@ -15,9 +15,7 @@ const AddNewEvento = () => {
 
   const initialFormData = {
     type: "evento",
-    ciudad: {
-      id: parseInt(id)
-    },
+    idCiudad: parseInt(id),
     nombre: '',
     descripcion: '',
     fecha: '',

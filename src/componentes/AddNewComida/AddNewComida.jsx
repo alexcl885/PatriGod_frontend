@@ -15,9 +15,7 @@ const AddNewComida = () => {
 
   const initialFormData = {
     type: "comida",
-    ciudad: {
-      id: parseInt(id)
-    },
+    idCiudad: parseInt(id),
     nombre: '',
     descripcion: '',
     imagen: '',

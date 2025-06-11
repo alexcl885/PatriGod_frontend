@@ -1,9 +1,9 @@
-// src/componentes/MapaCiudades/MapaCiudades.jsx
 import React, { useState, useEffect } from 'react';
 import { Box, Paper, Typography, Button, CircularProgress } from '@mui/material';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { Link } from 'react-router-dom';
 import 'leaflet/dist/leaflet.css';
+import api from '../../servicios/api';
 
 const MapaCiudades = () => {
   const [ciudades, setCiudades] = useState([]);
@@ -11,10 +11,9 @@ const MapaCiudades = () => {
   const center = [40.4168, -3.7038]; 
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/ciudad')
-      .then(res => res.json())
-      .then(data => {
-        // Convertimos la respuesta a un array que Leaflet entienda:
+    api.get('/ciudad')
+      .then(res => {
+        const data = res.data;
         const lista = data.map(c => ({
           id: c.id,
           nombre: c.nombre,

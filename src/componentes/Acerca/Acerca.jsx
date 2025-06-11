@@ -70,6 +70,9 @@ const Acerca = () => {
           <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 600, mx: 'auto' }}>
             Nuestra plataforma global que redefine cómo exploramos, valoramos y preservamos el Patrimonio de la Humanidad.
           </Typography>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 2 }}>
+            ¿Tienes alguna consulta? Escribeme a <Box component="span" color="primary.main" fontWeight={700}>alexcopado2005@gmail.com</Box>
+          </Typography>
         </Box>
 
         {/* Valores Profesionales con centrado inteligente */}

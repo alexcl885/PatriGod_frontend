@@ -15,9 +15,7 @@ const AddNewMonumento = () => {
   const navigate = useNavigate();
   const initialFormData = {
     type: "monumento",
-    ciudad: {
-      id: parseInt(id)
-    },
+    idCiudad: parseInt(id),
     nombre: '',
     descripcion: '',
     imagen: '',
@@ -38,7 +36,12 @@ const AddNewMonumento = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]:
+        name === "precioEntrada"
+          ? parseFloat(value) || 0
+          : name === "altura"
+          ? parseFloat(value) || 0
+          : value,
     }));
   };
 

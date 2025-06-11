@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Container,
@@ -116,7 +116,7 @@ const HomePage = () => {
             gutterBottom
             sx={{ fontWeight: 700, mb: 4 }}
           >
-            Mapa interactivo en tiempo real
+            Mapa interactivo de Ciudades Patrimonio
           </Typography>
           <Grid container justifyContent="center">
               <MapaCiudades />

@@ -52,13 +52,17 @@ const ChatSidebar = () => {
 
   const handleSend = async () => {
     if (!user) {
-      toast.error('Debes iniciar sesión para usar el chat.');
-
-      setTimeout(() => {
-        setError('');
-        setOpen(false);
-        navigate('/login');
-      }, 1200);
+      toast.error('Debes iniciar sesión para usar el chat.', {
+        position: "top-center",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored"
+      });
+      setOpen(false);
+      navigate('/login');
       return;
     }
     if (!prompt.trim() || loading) return;
@@ -70,7 +74,6 @@ const ChatSidebar = () => {
 
     try {
       const res = await api.post('http://localhost:8080/api/ollama/chat', { prompt });
-      // El backend responde con .message.content
       const data = res.data || {};
       const botMsg = {
         role: data.message?.role || 'assistant',
@@ -104,6 +107,7 @@ const ChatSidebar = () => {
   return (
     <>
       <ToastContainer position="top-right" autoClose={3000} />
+
       <Tooltip title="Abrir chat IA" arrow>
         <IconButton
           onClick={toggleDrawer}

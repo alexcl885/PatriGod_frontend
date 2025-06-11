@@ -22,6 +22,7 @@ import AddNewComidaPage from './paginas/AddNewComidaPage'
 import DetallesUsuarioPage from './paginas/DetallesUsuarioPage'
 import EnviarEmailUsuarios from './componentes/EnviarEmailUsuarios/EnviarEmailUsuarios'
 import ErrorPage from './paginas/ErrorPage'
+import 'react-toastify/dist/ReactToastify.css';
 
 const router = createBrowserRouter([
   {

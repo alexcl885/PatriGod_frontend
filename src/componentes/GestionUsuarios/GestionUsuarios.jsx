@@ -1,19 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Container, Typography, Grid, Card, CardContent, Avatar, Chip, CircularProgress,
-  Box, IconButton, Tooltip, CardHeader, TextField, Pagination
+  Box, IconButton, Tooltip, CardHeader, TextField, Pagination, Select, MenuItem, FormControl, InputLabel,
+  Dialog, DialogTitle, DialogContent, DialogActions, Button
 } from '@mui/material';
-import { ToggleOn, ToggleOff, Person } from '@mui/icons-material';
+import { ToggleOn, ToggleOff, Person, SwapHoriz } from '@mui/icons-material';
 import { pink, lightGreen, deepOrange, blueGrey } from '@mui/material/colors';
 import api from '../../servicios/api';
+import { UserContext } from '../../contexto/UserContext';
 
 const GestionUsuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
   const [accionEnProgreso, setAccionEnProgreso] = useState(null);
+  const [rolEnProgreso, setRolEnProgreso] = useState(null); // Para controlar loading al cambiar rol
   const [searchTerm, setSearchTerm] = useState('');
   const [pagina, setPagina] = useState(1);
-  const usuariosPorPagina = 5;
+  const [nuevoRol, setNuevoRol] = useState('');
+  const [usuarioSeleccionado, setUsuarioSeleccionado] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const {user} = useContext(UserContext); // Si necesitas el contexto de autenticación
+  const usuariosPorPagina = 4;
 
   useEffect(() => {
     const fetchUsuarios = async () => {
@@ -42,6 +49,42 @@ const GestionUsuarios = () => {
     } finally {
       setAccionEnProgreso(null);
     }
+  };
+
+  const cambiarRolUsuario = async (id, nuevoRol) => {
+    setRolEnProgreso(id);
+    try {
+      await api.put(`http://localhost:8080/api/admin/usuario/${id}/rol`, {
+        username: user.username, // Cambia esto si tienes el username real del admin logueado
+        tipo: nuevoRol
+      });
+      setUsuarios((prev) =>
+        prev.map((u) => (u.id === id ? { ...u, tipo: nuevoRol } : u))
+      );
+    } catch (error) {
+      console.error('Error al cambiar rol:', error);
+    } finally {
+      setRolEnProgreso(null);
+    }
+  };
+
+  const abrirDialogoRol = (usuario, rolActual) => {
+    setUsuarioSeleccionado(usuario);
+    setNuevoRol(rolActual);
+    setDialogOpen(true);
+  };
+
+  const cerrarDialogoRol = () => {
+    setDialogOpen(false);
+    setUsuarioSeleccionado(null);
+    setNuevoRol('');
+  };
+
+  const confirmarCambioRol = async () => {
+    if (usuarioSeleccionado && nuevoRol && usuarioSeleccionado.tipo !== nuevoRol) {
+      await cambiarRolUsuario(usuarioSeleccionado.id, nuevoRol);
+    }
+    cerrarDialogoRol();
   };
 
   const usuariosFiltrados = usuarios.filter((usuario) =>
@@ -114,7 +157,7 @@ const GestionUsuarios = () => {
                     title={<Typography variant="h6" color="white">{usuario.username}</Typography>}
                     subheader={<Typography variant="caption" color={blueGrey[200]}>ID: {usuario.id}</Typography>}
                   />
-                  <CardContent>
+                  <CardContent sx={{ pb: 0 }}>
                     <Typography variant="body2" sx={{ color: pink[100] }}>
                       <strong>Email:</strong> {usuario.email}
                     </Typography>
@@ -145,30 +188,93 @@ const GestionUsuarios = () => {
                     <Typography variant="body2" sx={{ color: pink[100], mt: 1 }}>
                       <strong>Fecha de creación:</strong> {formatFecha(usuario.fechaCreacion)}
                     </Typography>
-
-                    <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
-                      <Tooltip title={usuario.activo ? 'Desactivar usuario' : 'Activar usuario'}>
-                        <span>
-                          <IconButton
-                            onClick={() => cambiarEstadoUsuario(usuario.id, !usuario.activo)}
-                            disabled={accionEnProgreso === usuario.id}
-                            sx={{
-                              color: usuario.activo ? lightGreen[300] : pink[300],
-                              '&:hover': {
-                                color: usuario.activo ? lightGreen[100] : pink[100]
-                              }
-                            }}
-                          >
-                            {usuario.activo ? <ToggleOff /> : <ToggleOn />}
-                          </IconButton>
-                        </span>
-                      </Tooltip>
-                    </Box>
                   </CardContent>
+                  {/* Botón para cambiar rol, abajo del todo */}
+                  <Box sx={{ mt: 2, mb: 2, px: 2, display: 'flex', justifyContent: 'flex-end' }}>
+                    <Tooltip title="Cambiar rol">
+                      <span>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          startIcon={<SwapHoriz />}
+                          sx={{
+                            borderRadius: 3,
+                            fontWeight: 'bold',
+                            background: 'linear-gradient(90deg, #d500f9 0%, #2979ff 100%)',
+                            color: 'white',
+                            boxShadow: 2,
+                            '&:hover': {
+                              background: 'linear-gradient(90deg, #2979ff 0%, #d500f9 100%)',
+                            },
+                          }}
+                          disabled={rolEnProgreso === usuario.id}
+                          onClick={() => abrirDialogoRol(usuario, usuario.tipo)}
+                        >
+                          Cambiar Rol
+                        </Button>
+                      </span>
+                    </Tooltip>
+                  </Box>
+                  {/* Controles para activar/desactivar usuario */}
+                  <Box sx={{ mb: 2, px: 2, display: 'flex', justifyContent: 'flex-end' }}>
+                    <Tooltip title={usuario.activo ? 'Desactivar usuario' : 'Activar usuario'}>
+                      <span>
+                        <IconButton
+                          onClick={() => cambiarEstadoUsuario(usuario.id, !usuario.activo)}
+                          disabled={accionEnProgreso === usuario.id}
+                          sx={{
+                            color: usuario.activo ? lightGreen[300] : pink[300],
+                            '&:hover': {
+                              color: usuario.activo ? lightGreen[100] : pink[100]
+                            }
+                          }}
+                        >
+                          {usuario.activo ? <ToggleOff /> : <ToggleOn />}
+                        </IconButton>
+                      </span>
+                    </Tooltip>
+                  </Box>
                 </Card>
               </Grid>
             ))}
           </Grid>
+
+          {/* Dialog para cambiar rol */}
+          <Dialog open={dialogOpen} onClose={cerrarDialogoRol}>
+            <DialogTitle>Cambiar rol de usuario</DialogTitle>
+            <DialogContent>
+              <FormControl fullWidth sx={{ mt: 2 }}>
+                <InputLabel id="select-rol-label">Nuevo rol</InputLabel>
+                <Select
+                  labelId="select-rol-label"
+                  value={nuevoRol}
+                  label="Nuevo rol"
+                  onChange={(e) => setNuevoRol(e.target.value)}
+                >
+                  <MenuItem value="ADMINISTRADOR">ADMINISTRADOR</MenuItem>
+                  <MenuItem value="USUARIO">USUARIO</MenuItem>
+                </Select>
+              </FormControl>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={cerrarDialogoRol} color="inherit">
+                Cancelar
+              </Button>
+              <Button
+                onClick={confirmarCambioRol}
+                color="secondary"
+                variant="contained"
+                disabled={
+                  !usuarioSeleccionado ||
+                  nuevoRol === usuarioSeleccionado?.tipo ||
+                  rolEnProgreso === usuarioSeleccionado?.id
+                }
+                startIcon={<SwapHoriz />}
+              >
+                Confirmar
+              </Button>
+            </DialogActions>
+          </Dialog>
 
           {/* Controles de paginación */}
           {totalPaginas > 1 && (
