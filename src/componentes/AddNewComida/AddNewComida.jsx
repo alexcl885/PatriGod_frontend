@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {
   Container, Paper, Typography, Stepper, Step, StepLabel,
-  TextField, Button, Grid, Box, InputAdornment, FormControlLabel, Checkbox
+  TextField, Button, Grid, Box, InputAdornment, FormControlLabel, Checkbox,
+  TextareaAutosize
 } from '@mui/material';
 import api from '../../servicios/api';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -64,7 +65,24 @@ const AddNewComida = () => {
               <TextField label="Nombre del Plato" name="nombre" fullWidth required value={formData.nombre} onChange={handleChange} />
             </Grid>
             <Grid item xs={12}>
-              <TextField label="Descripción" name="descripcion" fullWidth required multiline rows={3} value={formData.descripcion} onChange={handleChange} />
+              <TextareaAutosize label="Descripción"
+                style={{
+                  width: '100%',
+                  maxWidth: '600px',
+                  padding: '10px',
+                  fontSize: '1rem',
+                  borderRadius: '8px',
+                  border: '1px solid #ccc',
+                  resize: 'vertical',
+                  boxShadow: '2px 2px 6px rgba(0,0,0,0.1)',
+                }}
+                name="descripcion" 
+                fullWidth 
+                required 
+                multiline 
+                rows={3} 
+                value={formData.descripcion} 
+                onChange={handleChange} />
             </Grid>
             <Grid item xs={12}>
               <TextField label="URL de Imagen" name="imagen" fullWidth value={formData.imagen} onChange={handleChange} />
@@ -110,7 +128,23 @@ const AddNewComida = () => {
               <TextField label="Acompañamientos Recomendados" name="acompañamientosRecomendados" fullWidth value={formData.acompañamientosRecomendados} onChange={handleChange} />
             </Grid>
             <Grid item xs={12}>
-              <TextField label="Curiosidades" name="curiosidades" fullWidth multiline rows={3} value={formData.curiosidades} onChange={handleChange} />
+              <TextareaAutosize
+                label="Curiosidades"
+                style={{
+                  width: '100%',
+                  maxWidth: '600px',
+                  padding: '10px',
+                  fontSize: '1rem',
+                  borderRadius: '8px',
+                  border: '1px solid #ccc',
+                  resize: 'vertical',
+                  boxShadow: '2px 2px 6px rgba(0,0,0,0.1)',
+                }}
+                name="curiosidades"
+                fullWidth multiline
+                rows={3}
+                value={formData.curiosidades}
+                onChange={handleChange} />
             </Grid>
           </Grid>
         );

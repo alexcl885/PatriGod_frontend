@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {
   Container, Paper, Typography, Stepper, Step, StepLabel,
-  TextField, Button, Grid, Box, InputAdornment
+  TextField, Button, Grid, Box, InputAdornment,
+  TextareaAutosize
 } from '@mui/material';
 import { AddLocationAlt } from '@mui/icons-material';
 import api from '../../servicios/api';
@@ -40,8 +41,8 @@ const AddNewMonumento = () => {
         name === "precioEntrada"
           ? parseFloat(value) || 0
           : name === "altura"
-          ? parseFloat(value) || 0
-          : value,
+            ? parseFloat(value) || 0
+            : value,
     }));
   };
 
@@ -76,7 +77,24 @@ const AddNewMonumento = () => {
               <TextField label="Nombre del Monumento" name="nombre" fullWidth required value={formData.nombre} onChange={handleChange} />
             </Grid>
             <Grid item xs={12}>
-              <TextField label="Descripción" name="descripcion" fullWidth required multiline rows={4} value={formData.descripcion} onChange={handleChange} />
+              <TextareaAutosize style={{
+                width: '100%',
+                maxWidth: '600px',
+                padding: '10px',
+                fontSize: '1rem',
+                borderRadius: '8px',
+                border: '1px solid #ccc',
+                resize: 'vertical',
+                boxShadow: '2px 2px 6px rgba(0,0,0,0.1)',
+              }}
+                label="Descripción"
+                name="descripcion"
+                fullWidth
+                required
+                multiline
+                rows={4}
+                value={formData.descripcion}
+                onChange={handleChange} />
             </Grid>
             <Grid item xs={12}>
               <TextField label="URL de Imagen" name="imagen" fullWidth value={formData.imagen} onChange={handleChange} />
@@ -146,10 +164,20 @@ const AddNewMonumento = () => {
         return (
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <TextField
+              <TextareaAutosize
                 label="Curiosidades"
                 name="curiosidades"
                 fullWidth
+                style={{
+                  width: '1023px',
+                  maxWidth: '600px',
+                  padding: '10px',
+                  fontSize: '1rem',
+                  borderRadius: '8px',
+                  border: '1px solid #ccc',
+                  resize: 'vertical',
+                  boxShadow: '2px 2px 6px rgba(0,0,0,0.1)',
+                }}
                 multiline
                 rows={4}
                 value={formData.curiosidades}
