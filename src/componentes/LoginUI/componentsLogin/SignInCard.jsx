@@ -16,6 +16,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { clearToken, setTokenLocal } from '../../../servicios/auth';
 import api from '../../../servicios/api';
 import { UserContext } from '../../../contexto/UserContext';
+import { ToastContainer } from 'react-toastify';
 
 
 
@@ -67,7 +68,7 @@ export default function SignInCard() {
       const response = await api.post('/auth/login', { username, password });
       setTokenLocal(response.data.jwt);
       setToken(response.data.jwt)
-      
+
       /**
        * peticion para recoger los datos del usuario 
        * y guardar los datos del usuario en el contexto global
@@ -75,7 +76,7 @@ export default function SignInCard() {
       const responseUser = await api.get("/usuario")
       setUser(responseUser.data);
       console.log(responseUser.data);
-      
+
       navigate('/');
     } catch (err) {
       console.error(err);
@@ -85,108 +86,113 @@ export default function SignInCard() {
   };
 
   return (
-    <Card variant="outlined">
-      <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-        <SitemarkIcon />
-      </Box>
-      <Typography
-        component="h1"
-        variant="h4"
-        sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
-      >
-        Sign in
-      </Typography>
-      <Box
-        component="form"
-        onSubmit={handleSignIn}
-        noValidate
-        sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}
-      >
-        <FormControl>
-          <FormLabel htmlFor="username">Username</FormLabel>
-          <TextField
-            id="username"
-            name="username"
-            placeholder="Nombre de Usuario"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            fullWidth
-            variant="outlined"
-          />
-        </FormControl>
-        <FormControl>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <FormLabel htmlFor="password">Password</FormLabel>
-            <Link
-              component="button"
-              type="button"
-              onClick={handleClickOpen}
-              variant="body2"
-              sx={{ alignSelf: 'baseline' }}
-            >
-              ¿Olvidaste la contraseña?
-            </Link>
-          </Box>
-          <TextField
-            id="password"
-            name="password"
-            placeholder="••••••"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            fullWidth
-            variant="outlined"
-          />
-        </FormControl>
+    <>
+      <ToastContainer position="top-right" autoClose={3000} />
 
-        {error && (
-          <Typography color="error" variant="body2">
-            {error}
-          </Typography>
-        )}
 
-        <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
-          label="Recuérdame"
-        />
-        <ForgotPassword open={open} handleClose={handleClose} />
-        <Button type="submit" fullWidth variant="contained">
-          ¡Enviar!
-        </Button>
-        <Typography sx={{ textAlign: 'center' }}>
-          ¿No tienes cuenta?{' '}
-          <span>
-            <Link
-              to={"/register"}
-              variant="body2"
-              sx={{ alignSelf: 'center' }}
-            >
-              Regístrate
-            </Link>
-          </span>
+      <Card variant="outlined">
+        <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+          <SitemarkIcon />
+        </Box>
+        <Typography
+          component="h1"
+          variant="h4"
+          sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+        >
+          Sign in
         </Typography>
-      </Box>
-      <Divider>o</Divider>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <Button
-          fullWidth
-          variant="outlined"
-          onClick={() => alert('Inicia sesión con Google')}
-          startIcon={<GoogleIcon />}
+        <Box
+          component="form"
+          onSubmit={handleSignIn}
+          noValidate
+          sx={{ display: 'flex', flexDirection: 'column', width: '100%', gap: 2 }}
         >
-          Google
-        </Button>
-        <Button
-          fullWidth
-          variant="outlined"
-          onClick={() => alert('Inicia sesión con Facebook')}
-          startIcon={<FacebookIcon />}
-        >
-          Facebook
-        </Button>
-      </Box>
-    </Card>
+          <FormControl>
+            <FormLabel htmlFor="username">Username</FormLabel>
+            <TextField
+              id="username"
+              name="username"
+              placeholder="Nombre de Usuario"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+              fullWidth
+              variant="outlined"
+            />
+          </FormControl>
+          <FormControl>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+              <FormLabel htmlFor="password">Password</FormLabel>
+              <Link
+                component="button"
+                type="button"
+                onClick={handleClickOpen}
+                variant="body2"
+                sx={{ alignSelf: 'baseline' }}
+              >
+                ¿Olvidaste la contraseña?
+              </Link>
+            </Box>
+            <TextField
+              id="password"
+              name="password"
+              placeholder="••••••"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              fullWidth
+              variant="outlined"
+            />
+          </FormControl>
+
+          {error && (
+            <Typography color="error" variant="body2">
+              {error}
+            </Typography>
+          )}
+
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="Recuérdame"
+          />
+          <ForgotPassword open={open} handleClose={handleClose} />
+          <Button type="submit" fullWidth variant="contained">
+            ¡Enviar!
+          </Button>
+          <Typography sx={{ textAlign: 'center' }}>
+            ¿No tienes cuenta?{' '}
+            <span>
+              <Link
+                to={"/register"}
+                variant="body2"
+                sx={{ alignSelf: 'center' }}
+              >
+                Regístrate
+              </Link>
+            </span>
+          </Typography>
+        </Box>
+        <Divider>o</Divider>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() => alert('Inicia sesión con Google')}
+            startIcon={<GoogleIcon />}
+          >
+            Google
+          </Button>
+          <Button
+            fullWidth
+            variant="outlined"
+            onClick={() => alert('Inicia sesión con Facebook')}
+            startIcon={<FacebookIcon />}
+          >
+            Facebook
+          </Button>
+        </Box>
+      </Card>
+    </>
   );
 }

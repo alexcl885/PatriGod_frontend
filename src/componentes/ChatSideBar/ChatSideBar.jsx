@@ -106,8 +106,6 @@ const ChatSidebar = () => {
 
   return (
     <>
-      <ToastContainer position="top-right" autoClose={3000} />
-
       <Tooltip title="Abrir chat IA" arrow>
         <IconButton
           onClick={toggleDrawer}
