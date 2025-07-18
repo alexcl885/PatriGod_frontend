@@ -1,59 +1,53 @@
 import React, { useState } from 'react';
 import {
   Container, Paper, Typography, Stepper, Step, StepLabel,
-  TextField, Button, Grid, Box, InputAdornment,
+  TextField, Button, Grid, Box, InputAdornment, FormControlLabel, Checkbox,
   TextareaAutosize
 } from '@mui/material';
 import api from '../../services/api';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const steps = ['Información General', 'Detalles del Evento', 'Información Adicional'];
+const steps = ['Información General', 'Detalles Culinarios', 'Información Adicional'];
 
-const AddNewEvento = () => {
+const AddNewFood = () => {
   const [activeStep, setActiveStep] = useState(0);
   const { id } = useParams();
   const navigate = useNavigate();
 
   const initialFormData = {
-    type: "evento",
+    type: "comida",
     idCiudad: parseInt(id),
     nombre: '',
     descripcion: '',
-    fecha: '',
-    horaEvento: '',
-    lugar: '',
-    informacionEvento: '',
     imagen: '',
-    tipoEvento: '',
-    organizador: '',
-    webOficial: '',
-    precio: '',
-    duracion: ''
+    tipo: '',
+    origen: '',
+    ingredientesPrincipales: '',
+    caloriasAprox: '',
+    momentoConsumo: '',
+    aptoVegetarianos: false,
+    acompañamientosRecomendados: '',
+    curiosidades: ''
   };
 
   const [formData, setFormData] = useState(initialFormData);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: type === 'checkbox' ? checked : value,
     }));
   };
 
-  const handleNext = () => {
-    setActiveStep((prev) => prev + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prev) => prev - 1);
-  };
+  const handleNext = () => setActiveStep((prev) => prev + 1);
+  const handleBack = () => setActiveStep((prev) => prev - 1);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const envioDatos = await api.post("/evento", formData);
-      console.log("Evento creado con éxito:", envioDatos.data);
+      const envioDatos = await api.post("/comida", formData);
+      console.log("Comida creada con éxito:", envioDatos.data);
       navigate(`/ciudad/${id}`);
     } catch (error) {
       console.error("Error al guardar:", error.response?.data || error.message);
@@ -68,7 +62,7 @@ const AddNewEvento = () => {
         return (
           <Grid container spacing={3}>
             <Grid item xs={12}>
-              <TextField label="Nombre del Evento" name="nombre" fullWidth required value={formData.nombre} onChange={handleChange} />
+              <TextField label="Nombre del Plato" name="nombre" fullWidth required value={formData.nombre} onChange={handleChange} />
             </Grid>
             <Grid item xs={12}>
               <TextareaAutosize label="Descripción"
@@ -86,7 +80,7 @@ const AddNewEvento = () => {
                 fullWidth 
                 required 
                 multiline 
-                rows={4} 
+                rows={3} 
                 value={formData.descripcion} 
                 onChange={handleChange} />
             </Grid>
@@ -99,36 +93,58 @@ const AddNewEvento = () => {
         return (
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
-              <TextField label="Fecha" name="fecha" type="date" fullWidth InputLabelProps={{ shrink: true }} value={formData.fecha} onChange={handleChange} />
+              <TextField label="Tipo de Comida" name="tipo" fullWidth value={formData.tipo} onChange={handleChange} />
             </Grid>
             <Grid item xs={12} sm={6}>
-              <TextField label="Hora" name="horaEvento" type="time" fullWidth InputLabelProps={{ shrink: true }} value={formData.horaEvento} onChange={handleChange} />
+              <TextField label="Origen" name="origen" fullWidth value={formData.origen} onChange={handleChange} />
             </Grid>
             <Grid item xs={12}>
-              <TextField label="Lugar" name="lugar" fullWidth value={formData.lugar} onChange={handleChange} />
+              <TextField label="Ingredientes Principales" name="ingredientesPrincipales" fullWidth value={formData.ingredientesPrincipales} onChange={handleChange} />
             </Grid>
-            <Grid item xs={12}>
-              <TextField label="Información del Evento" name="informacionEvento" fullWidth multiline rows={3} value={formData.informacionEvento} onChange={handleChange} />
+            <Grid item xs={12} sm={6}>
+              <TextField label="Calorías Aproximadas" name="caloriasAprox" type="number" fullWidth value={formData.caloriasAprox} onChange={handleChange} InputProps={{ endAdornment: <InputAdornment position="end">kcal</InputAdornment> }} />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField label="Momento de Consumo" name="momentoConsumo" fullWidth value={formData.momentoConsumo} onChange={handleChange} />
             </Grid>
           </Grid>
         );
       case 2:
         return (
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-              <TextField label="Tipo de Evento" name="tipoEvento" fullWidth value={formData.tipoEvento} onChange={handleChange} />
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    name="aptoVegetarianos"
+                    checked={formData.aptoVegetarianos}
+                    onChange={handleChange}
+                  />
+                }
+                label="¿Apto para vegetarianos?"
+              />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField label="Organizador" name="organizador" fullWidth value={formData.organizador} onChange={handleChange} />
+            <Grid item xs={12}>
+              <TextField label="Acompañamientos Recomendados" name="acompañamientosRecomendados" fullWidth value={formData.acompañamientosRecomendados} onChange={handleChange} />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField label="Web Oficial" name="webOficial" fullWidth value={formData.webOficial} onChange={handleChange} />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField label="Precio" name="precio" fullWidth value={formData.precio} onChange={handleChange} InputProps={{ endAdornment: <InputAdornment position="end">€</InputAdornment> }} />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField label="Duración" name="duracion" type="number" fullWidth value={formData.duracion} onChange={handleChange} InputProps={{ endAdornment: <InputAdornment position="end">min</InputAdornment> }} />
+            <Grid item xs={12}>
+              <TextareaAutosize
+                label="Curiosidades"
+                style={{
+                  width: '100%',
+                  maxWidth: '600px',
+                  padding: '10px',
+                  fontSize: '1rem',
+                  borderRadius: '8px',
+                  border: '1px solid #ccc',
+                  resize: 'vertical',
+                  boxShadow: '2px 2px 6px rgba(0,0,0,0.1)',
+                }}
+                name="curiosidades"
+                fullWidth multiline
+                rows={3}
+                value={formData.curiosidades}
+                onChange={handleChange} />
             </Grid>
           </Grid>
         );
@@ -141,7 +157,7 @@ const AddNewEvento = () => {
     <Container maxWidth="md" sx={{ mt: 6 }}>
       <Paper elevation={4} sx={{ p: 5, borderRadius: 4 }}>
         <Typography variant="h4" gutterBottom fontWeight="bold">
-          Añadir Nuevo Evento
+          Añadir Nueva Comida
         </Typography>
 
         <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
@@ -162,7 +178,7 @@ const AddNewEvento = () => {
 
             {isLastStep ? (
               <Button type="submit" variant="contained" color="primary">
-                Guardar Evento
+                Guardar Comida
               </Button>
             ) : (
               <Button variant="contained" onClick={handleNext} type="button">
@@ -176,4 +192,4 @@ const AddNewEvento = () => {
   );
 };
 
-export default AddNewEvento;
+export default AddNewFood;

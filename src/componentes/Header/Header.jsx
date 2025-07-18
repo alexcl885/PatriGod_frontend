@@ -1,8 +1,8 @@
 import { AppBar, Toolbar, Typography, Button, Box } from '@mui/material';
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { UserContext } from '../../contexto/UserContext';
-import { clearToken } from '../../servicios/auth';
+import { UserContext } from '../../context/UserContext';
+import { clearToken } from '../../services/auth';
 
 const Header = () => {
   const { token, setToken, user, setUser } = useContext(UserContext);
@@ -26,7 +26,7 @@ const Header = () => {
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           <Link to="/" style={{ textDecoration: 'none' }}>
             <img
-              src="/src/imagenes/p-cortada.png"
+              src="/src/images/p-cortada.png"
               alt="Logo"
               style={{
                 height: '60px',

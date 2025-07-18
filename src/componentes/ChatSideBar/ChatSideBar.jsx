@@ -17,9 +17,9 @@ import SendIcon from '@mui/icons-material/Send';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import PersonIcon from '@mui/icons-material/Person';
-import api from '../../servicios/api';
+import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../contexto/UserContext';
+import { UserContext } from '../../context/UserContext';
 import { toast, ToastContainer } from 'react-toastify';
 
 const AVATAR_USER = <Avatar sx={{ bgcolor: 'primary.main', width: 32, height: 32 }}><PersonIcon /></Avatar>;

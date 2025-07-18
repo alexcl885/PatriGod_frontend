@@ -15,18 +15,18 @@ import {
 } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
+import api from '../../services/api';
 
-const RankingMonumentos = () => {
+const MonumentsRanking = () => {
   const [ranking, setRanking] = useState([]);
 
   useEffect(() => {
     const fetchRanking = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/ciudad/rank/monumento');
-        const data = await response.json();
-        setRanking(data);
+        const response = await api.get('/city/ranking/monuments');
+        setRanking(response.data);
       } catch (error) {
-        console.error('Error al obtener el ranking:', error);
+        console.error('Error fetching ranking:', error);
       }
     };
 
@@ -64,7 +64,7 @@ const RankingMonumentos = () => {
         }}
       >
         <LocationCityIcon sx={{ fontSize: 38, mb: -0.7, mr: 1, color: '#90caf9' }} />
-        Ranking de Ciudades por Monumentos
+        Cities Monuments Ranking
       </Typography>
       <TableContainer
         component={Paper}
@@ -79,17 +79,17 @@ const RankingMonumentos = () => {
           <TableHead>
             <TableRow sx={{ background: 'linear-gradient(90deg, #1976d2 60%, #1565c0 100%)' }}>
               <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: 18, border: 0 }}>#</TableCell>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: 18, border: 0 }}>Ciudad</TableCell>
-              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: 18, border: 0 }}>Puntuación Media</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: 18, border: 0 }}>City</TableCell>
+              <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: 18, border: 0 }}>Average Score</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {ranking.map((ciudad) => (
-              <Fade in key={ciudad.ciudad_id}>
+            {(Array.isArray(ranking) ? ranking : []).map((city) => (
+              <Fade in key={city.cityName}>
                 <TableRow
                   sx={{
-                    background: ciudad.posicion <= 3
-                      ? `linear-gradient(90deg, ${getMedalColor(ciudad.posicion)}22 0%, #1976d2 100%)`
+                    background: city.position <= 3
+                      ? `linear-gradient(90deg, ${getMedalColor(city.position)}22 0%, #1976d2 100%)`
                       : 'transparent',
                     color: 'white',
                     '&:hover': {
@@ -99,27 +99,27 @@ const RankingMonumentos = () => {
                 >
                   <TableCell sx={{ color: 'white', fontWeight: 'bold', fontSize: 17, border: 0 }}>
                     <Box display="flex" alignItems="center">
-                      {ciudad.posicion <= 3 && (
+                      {city.position <= 3 && (
                         <Tooltip
                           title={
-                            ciudad.posicion === 1
-                              ? 'Oro'
-                              : ciudad.posicion === 2
-                              ? 'Plata'
-                              : 'Bronce'
+                            city.position === 1
+                              ? 'Gold'
+                              : city.position === 2
+                              ? 'Silver'
+                              : 'Bronze'
                           }
                           arrow
                         >
                           <EmojiEventsIcon
                             sx={{
-                              color: getMedalColor(ciudad.posicion),
+                              color: getMedalColor(city.position),
                               mr: 1,
                               fontSize: 28
                             }}
                           />
                         </Tooltip>
                       )}
-                      {ciudad.posicion}
+                      {city.position}
                     </Box>
                   </TableCell>
                   <TableCell sx={{ color: '#bbdefb', fontWeight: 'bold', fontSize: 17, border: 0 }}>
@@ -135,16 +135,16 @@ const RankingMonumentos = () => {
                           boxShadow: 2
                         }}
                       >
-                        {ciudad.ciudad_nombre?.charAt(0) || <LocationCityIcon />}
+                        {city.cityName?.charAt(0) || <LocationCityIcon />}
                       </Avatar>
                       <Typography fontWeight="bold" sx={{ color: '#fff', fontSize: 17 }}>
-                        {ciudad.ciudad_nombre}
+                        {city.cityName}
                       </Typography>
                     </Box>
                   </TableCell>
                   <TableCell sx={{ color: '#fffde7', fontWeight: 'bold', fontSize: 17, border: 0 }}>
                     <span style={{ fontSize: 20, marginRight: 4 }}>⭐</span>
-                    {ciudad.puntuacion_media.toFixed(2)}
+                    {city.averageScore ? city.averageScore.toFixed(2) : "0"}
                   </TableCell>
                 </TableRow>
               </Fade>
@@ -156,4 +156,4 @@ const RankingMonumentos = () => {
   );
 };
 
-export default RankingMonumentos;
+export default MonumentsRanking;

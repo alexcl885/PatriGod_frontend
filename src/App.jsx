@@ -1,27 +1,27 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './App.css'
 import Layout from './componentes/Layout/Layout'
-import HomePage from './paginas/HomePage'
-import AcercaPage from './paginas/AcercaPage'
-import LoginPage from './paginas/LoginPage'
-import CiudadPage from './paginas/CiudadPage'
-import MonumentosCiudadPage from './paginas/MonumentosCiudadPage'
-import ComidasCiudadPage from './paginas/ComidasCiudadPage'
-import EventosCiudadPage from './paginas/EventosCiudadPage'
-import ComidaPage from './paginas/ComidaPage'
-import MonumentoPage from './paginas/MonumentoPage'
-import EventoPage from './paginas/EventoPage'
-import RankingPage from './paginas/RankingPage'
-import RankingArticulosPage from './paginas/RankingArticulosPage'
-import { UserProvider } from './contexto/UserContext'
+import HomePage from './pages/HomePage'
+import AboutPage from './pages/AboutPage'
+import LoginPage from './pages/LoginPage'
+import CityPage from './pages/CityPage'
+import CityMonumentsPage from './pages/CityMonumentsPage'
+import CityFoods from './pages/CityFoods'
+import CityEventsPage from './pages/CityEventsPage'
+import FoodPage from './pages/FoodPage'
+import MonumentPage from './pages/MonumentPage'
+import EventPage from './pages/EventPage'
+import RankingPage from './pages/RankingPage'
+import RankingArticulosPage from './pages/RankingArticulosPage'
+import { UserProvider } from './context/UserContext'
 import RegisterInSide from './componentes/Registro/RegisterInSide'
-import GestionUsuariosPage from './paginas/GestionUsuariosPage'
-import AddNewMonumentoPage from './paginas/AddNewMonumentoPage'
-import AddNewEventoPage from './paginas/AddNewEventoPage'
-import AddNewComidaPage from './paginas/AddNewComidaPage'
-import DetallesUsuarioPage from './paginas/DetallesUsuarioPage'
-import EnviarEmailUsuarios from './componentes/EnviarEmailUsuarios/EnviarEmailUsuarios'
-import ErrorPage from './paginas/ErrorPage'
+import GestionUsuariosPage from './pages/GestionUsuariosPage'
+import AddNewMonumentPage from './pages/AddNewMonumentoPage'
+import AddNewEventPage from './pages/AddNewEventoPage'
+import AddNewFoodPage from './pages/AddNewComidaPage'
+import UserDetailsPage from './pages/UserDetailsPage'
+import SendEmailUsers from './componentes/SendEmailUsers/SendEmailUsers'
+import ErrorPage from './pages/ErrorPage'
 import 'react-toastify/dist/ReactToastify.css';
 
 const router = createBrowserRouter([
@@ -35,52 +35,52 @@ const router = createBrowserRouter([
             element:<HomePage/>,
           },
           {
-            path:`ciudad/:id`,
-            element:<CiudadPage/>,
+            path:`city/:id`,
+            element:<CityPage/>,
           },
           {
-            path:"ciudad/:id/comidas",
-            element:<ComidasCiudadPage/>,
+            path:"city/:id/foods",
+            element:<CityFoods/>,
           },
           {
-            path:"ciudad/:id/comidas/:idComida",
-            element:<ComidaPage></ComidaPage>,
+            path:"city/:id/foods/:idFood",
+            element:<FoodPage/>,
           },
           {
-            path:"ciudad/:id/monumentos",
-            element:<MonumentosCiudadPage/>,
+            path:"city/:id/monuments",
+            element:<CityMonumentsPage/>,
           },
           {
-            path:"ciudad/:id/monumentos/:idMonumento",
-            element:<MonumentoPage/>,
+            path:"city/:id/monuments/:idMonument",
+            element:<MonumentPage/>,
           },
           {
-            path:"ciudad/:id/eventos",
-            element:<EventosCiudadPage/>,
+            path:"city/:id/events",
+            element:<CityEventsPage/>,
           },
           {
-            path:"ciudad/:id/eventos/:idEvento",
-            element:<EventoPage></EventoPage>,
+            path:"city/:id/events/:idEvent",
+            element:<EventPage/>,
           },
           {
             path:"ciudad/:id/add/monumento",
-            element:<AddNewMonumentoPage></AddNewMonumentoPage>,
+            element:<AddNewMonumentPage/>,
           },
           {
             path:"ciudad/:id/add/comida",
-            element:<AddNewComidaPage></AddNewComidaPage>,
+            element:<AddNewFoodPage/>,
           },
           {
             path:"ciudad/:id/add/evento",
-            element:<AddNewEventoPage></AddNewEventoPage>,
+            element:<AddNewEventPage/>,
           },
           {
             path:"acerca",
-            element:<AcercaPage/>,
+            element:<AboutPage/>,
           },
           {
             path:"datos_usuario",
-            element:<DetallesUsuarioPage/>,
+            element:<UserDetailsPage/>,
           },
           {
             path:"/login",
@@ -104,7 +104,7 @@ const router = createBrowserRouter([
           },
           {
             path:"/actualizacionPatrigod",
-            element:<EnviarEmailUsuarios/>,
+            element:<SendEmailUsers/>,
           }
         ]
   }

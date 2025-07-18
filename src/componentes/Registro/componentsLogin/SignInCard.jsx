@@ -14,9 +14,9 @@ import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { useNavigate } from 'react-router-dom';
-import { clearToken, setTokenLocal } from '../../../servicios/auth';
-import api from '../../../servicios/api';
-import { UserContext } from '../../../contexto/UserContext';
+import { clearToken, setTokenLocal } from '../../../services/auth';
+import api from '../../../services/api';
+import { UserContext } from '../../../context/UserContext';
 
 
 

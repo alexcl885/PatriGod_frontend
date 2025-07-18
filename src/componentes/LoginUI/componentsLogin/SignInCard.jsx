@@ -13,9 +13,9 @@ import { styled } from '@mui/material/styles';
 import ForgotPassword from './ForgotPassword';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 import { Link, useNavigate } from 'react-router-dom';
-import { clearToken, setTokenLocal } from '../../../servicios/auth';
-import api from '../../../servicios/api';
-import { UserContext } from '../../../contexto/UserContext';
+import { clearToken, setTokenLocal } from '../../../services/auth';
+import api from '../../../services/api';
+import { UserContext } from '../../../context/UserContext';
 import { ToastContainer } from 'react-toastify';
 
 
@@ -73,7 +73,7 @@ export default function SignInCard() {
        * peticion para recoger los datos del usuario 
        * y guardar los datos del usuario en el contexto global
        */
-      const responseUser = await api.get("/usuario")
+      const responseUser = await api.get("/user")
       setUser(responseUser.data);
       console.log(responseUser.data);
 

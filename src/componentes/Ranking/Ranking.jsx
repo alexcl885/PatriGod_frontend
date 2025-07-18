@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
+import api from '../../services/api';
 
 const getMedalColor = (pos) => {
   if (pos === 1) return '#FFD700';
@@ -23,15 +24,14 @@ const getMedalColor = (pos) => {
 };
 
 const Ranking = () => {
-  const [ciudades, setCiudades] = useState([]);
+  const [cities, setCities] = useState([]);
 
   useEffect(() => {
-    const getCiudades = async () => {
-      const getCityes = await fetch('http://localhost:8080/api/ciudad/rank');
-      const data = await getCityes.json();
-      setCiudades(data);
+    const fetchCities = async () => {
+      const response = await api.get('/city/ranking');
+      setCities(response.data);
     };
-    getCiudades();
+    fetchCities();
   }, []);
 
   return (
@@ -60,10 +60,10 @@ const Ranking = () => {
       >
         <Typography variant="h4" fontWeight="bold" sx={{ letterSpacing: 1, mb: 1 }}>
           <EmojiEventsIcon sx={{ mb: -0.7, mr: 1, color: '#FFD700' }} />
-          Ranking de Ciudades Patrimonio
+          World Heritage Cities Ranking
         </Typography>
         <Typography variant="subtitle1" sx={{ color: '#fffde7' }}>
-          Las ciudades mejor valoradas por sus visitantes y su historia.
+          The cities most highly rated by their visitors and their history.
         </Typography>
       </Paper>
       <Grid
@@ -72,8 +72,8 @@ const Ranking = () => {
         justifyContent="center"
         sx={{ maxWidth: 1100, width: '100%' }}
       >
-        {ciudades.map((ciudad, index) => (
-          <Fade in key={ciudad.id}>
+        {cities.map((city, index) => (
+          <Fade in key={city.id}>
             <Grid item xs={12} sm={6} md={4}>
               <Card
                 sx={{
@@ -93,8 +93,8 @@ const Ranking = () => {
                 <Box sx={{ position: 'relative' }}>
                   <CardMedia
                     component="img"
-                    image={ciudad.imagenPrincipal}
-                    alt={ciudad.nombre}
+                    image={city.mainImage}
+                    alt={city.name}
                     sx={{
                       height: 210,
                       objectFit: 'cover',
@@ -107,11 +107,11 @@ const Ranking = () => {
                   <Tooltip
                     title={
                       index + 1 === 1
-                        ? 'Oro'
+                        ? 'Gold'
                         : index + 1 === 2
-                        ? 'Plata'
+                        ? 'Silver'
                         : index + 1 === 3
-                        ? 'Bronce'
+                        ? 'Bronze'
                         : 'Ranking'
                     }
                     arrow
@@ -136,7 +136,7 @@ const Ranking = () => {
                   </Tooltip>
                   <Chip
                     icon={<LocationCityIcon />}
-                    label={ciudad.comunidadAutonoma}
+                    label={city.autonomousCommunity}
                     sx={{
                       position: 'absolute',
                       top: 16,
@@ -163,7 +163,7 @@ const Ranking = () => {
                       textShadow: '0 2px 8px #1976d2'
                     }}
                   >
-                    {index + 1} - {ciudad.nombre}
+                    {index + 1} - {city.name}
                   </Typography>
                   <Typography
                     variant="body2"
@@ -173,7 +173,7 @@ const Ranking = () => {
                       mb: 1
                     }}
                   >
-                    {ciudad.provincia}, {ciudad.comunidadAutonoma}
+                    {city.province}, {city.autonomousCommunity}
                   </Typography>
                   <Typography
                     variant="body1"
@@ -185,7 +185,7 @@ const Ranking = () => {
                     }}
                   >
                     <span style={{ fontSize: 22, marginRight: 4 }}>⭐</span>
-                    Puntuación: {ciudad.puntuacion ? ciudad.puntuacion?.toFixed(2) : "0"}
+                    Score: {city.score ? city.score?.toFixed(2) : "0"}
                   </Typography>
                 </CardContent>
               </Card>
