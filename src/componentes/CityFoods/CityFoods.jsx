@@ -71,22 +71,22 @@ const ComidasCiudad = ({ comidas, onComidaEliminado }) => {
               <CardMedia
                 component="img"
                 height="180"
-                image={comida.imagen}
-                alt={comida.nombre}
+                image={comida.image}
+                alt={comida.name}
               />
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h6" gutterBottom sx={{ fontWeight: 600 }}>
-                  {comida.nombre}
+                  {comida.name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                   {comida.descripcion}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  <strong>Ciudad:</strong> {comida.ciudad.nombre}
+                  <strong>Ciudad:</strong> {comida.city.name}
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" component={Link} to={`/ciudad/${comida.ciudad.id}/comidas/${comida.id}`}>
+                <Button size="small" component={Link} to={`/city/${comida.city.id}/foods/${comida.id}`}>
                   Ver más
                 </Button>
                 {user?.tipo === "ADMINISTRADOR" && (

@@ -10,7 +10,7 @@ const ComidasCiudadPage = () => {
 
   const fetchComidas = async () => {
     try {
-      const res = await fetch(`http://localhost:8080/api/ciudad/${id}/comidas`);
+      const res = await fetch(`http://localhost:8080/api/city/${id}/foods`);
       const data = await res.json();
       setComidas(data);
     } catch (error) {

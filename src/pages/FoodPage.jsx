@@ -7,7 +7,7 @@ import { UserContext } from "../context/UserContext";
 import { toast, ToastContainer } from "react-toastify";
 
 const FoodPage = () => {
-  const { id, idComida } = useParams();
+  const { id, idFood } = useParams();
   const [comida, setComida] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -19,7 +19,7 @@ const FoodPage = () => {
     const fetchComida = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/ciudad/${id}/comidas/${idComida}`
+          `http://localhost:8080/api/city/${id}/foods/${idFood}`
         );
         if (!response.ok) {
           throw new Error(`Error ${response.status}: ${response.statusText}`);
@@ -34,7 +34,7 @@ const FoodPage = () => {
     };
 
     fetchComida();
-  }, [id, idComida]);
+  }, [id, idFood]);
 
   const handleRatingChange = (event, newValue) => {
     setValoracion(newValue);
@@ -49,9 +49,9 @@ const FoodPage = () => {
 
   const postPuntuacion = async () => {
     if (token) { //compruebo primero si el usuario esta registrado
-      const response = await api.post("/puntuacion", {
+      const response = await api.post("/rating", {
         usuario: { id: user.id },
-        articulo: { id: idComida, type: "comida" },
+        articulo: { id: idFood, type: "food" },
         puntuacion: valoracion
       })
       if (response.status === 200) {

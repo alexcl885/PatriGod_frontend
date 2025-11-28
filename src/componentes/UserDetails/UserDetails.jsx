@@ -127,7 +127,11 @@ const UserDetails = ({ usuario }) => {
   };
 
   const { username, email, id, password, tipo, activo, fechaCreacion } = usuarioLocal;
-  const fechaFormateada = fechaCreacion[0] + "/" + fechaCreacion[1] + "/" + fechaCreacion[2];
+  const fechaFormateada = Array.isArray(usuarioLocal?.fechaCreacion)
+  ? `${usuarioLocal.fechaCreacion[2]}/${usuarioLocal.fechaCreacion[1]}/${usuarioLocal.fechaCreacion[0]}`
+  : "Fecha no disponible";
+
+
 
 
   return (

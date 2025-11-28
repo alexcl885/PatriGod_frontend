@@ -19,8 +19,8 @@ const Comida = ({ comida }) => {
         <CardMedia
           component="img"
           height="320"
-          image={comida.imagen}
-          alt={comida.nombre}
+          image={comida.image}
+          alt={comida.name}
           sx={{ objectFit: 'cover' }}
         />
 
@@ -28,24 +28,24 @@ const Comida = ({ comida }) => {
           {/* Información de la comida */}
           <CardContent sx={{ flex: 1, p: 4 }}>
             <Typography variant="h4" fontWeight={700} gutterBottom color="secondary.main">
-              {comida.nombre}
+              {comida.name}
             </Typography>
 
             <Typography variant="body1" paragraph>
-              {comida.descripcion}
+              {comida.description}
             </Typography>
 
             <Grid container spacing={2} sx={{ mb: 2 }}>
               <Grid item xs={12} sm={6}>
-                <Typography variant="body2"><strong>Tipo:</strong> {comida.tipo}</Typography>
-                <Typography variant="body2"><strong>Origen:</strong> {comida.origen}</Typography>
-                <Typography variant="body2"><strong>Calorías:</strong> {comida.caloriasAprox} kcal</Typography>
-                <Typography variant="body2"><strong>Vegetariano:</strong> {comida.aptoVegetarianos ? "Sí" : "No"}</Typography>
+                <Typography variant="body2"><strong>Tipo:</strong> {comida.type ? comida.type : "Buena comida"}</Typography>
+                <Typography variant="body2"><strong>Origen:</strong> {comida.origin}</Typography>
+                <Typography variant="body2"><strong>Calorías:</strong> {comida.approxCalories} kcal</Typography>
+                <Typography variant="body2"><strong>Vegetariano:</strong> {comida.suitableForVegetarians ? "Sí" : "No"}</Typography>
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Typography variant="body2"><strong>Momento:</strong> {comida.momentoConsumo}</Typography>
-                <Typography variant="body2"><strong>Acompañamientos:</strong> {comida.acompañamientosRecomendados}</Typography>
-                <Typography variant="body2"><strong>Ingredientes:</strong> {comida.ingredientesPrincipales}</Typography>
+                <Typography variant="body2"><strong>Momento:</strong> {comida.consumptionMoment}</Typography>
+                <Typography variant="body2"><strong>Acompañamientos:</strong> {comida.recommendedSideDishes}</Typography>
+                <Typography variant="body2"><strong>Ingredientes:</strong> {comida.mainIngredients}</Typography>
               </Grid>
             </Grid>
 
@@ -56,7 +56,7 @@ const Comida = ({ comida }) => {
                 Curiosidades
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {comida.curiosidades}
+                {comida.curiosities}
               </Typography>
             </Box>
           </CardContent>
@@ -68,21 +68,21 @@ const Comida = ({ comida }) => {
             <CardMedia
               component="img"
               height="180"
-              image={comida.ciudad.imagenPrincipal}
-              alt={comida.ciudad.nombre}
+              image={comida.city.mainImage}
+              alt={comida.city.name}
               sx={{ borderRadius: 2, mb: 2, objectFit: 'cover' }}
             />
             <Typography variant="h5" fontWeight={600} gutterBottom color="primary.main">
-              {comida.ciudad.nombre}
+              {comida.city.name}
             </Typography>
             <Typography variant="body2" paragraph color="text.secondary">
-              {comida.ciudad.descripcion}
+              {comida.city.description}
             </Typography>
             <Stack direction="row" spacing={1} flexWrap="wrap">
-              <Chip label={`Provincia: ${comida.ciudad.provincia}`} size="small" />
-              <Chip label={`Comunidad: ${comida.ciudad.comunidadAutonoma}`} size="small" />
+              <Chip label={`Provincia: ${comida.city.province}`} size="small" />
+              <Chip label={`Comunidad: ${comida.city.autonomousCommunity}`} size="small" />
               <Chip
-                label={`Patrimonio ${new Date(comida.ciudad.fechaPatrimonio).getFullYear()}`}
+                label={`Patrimonio ${new Date(comida.city.heritageDate).getFullYear()}`}
                 size="small"
                 color="success"
               />

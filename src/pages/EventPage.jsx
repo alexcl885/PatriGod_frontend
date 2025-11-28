@@ -8,48 +8,46 @@ import { toast, ToastContainer } from "react-toastify";
 
 const EventPage = () => {
   const { token, setToken, user } = useContext(UserContext);
-  const { id, idEvento } = useParams();
-  const [evento, setEvento] = useState(null);
+  const { id, idEvent } = useParams();
+  const [event, setevent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [valoracion, setValoracion] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchEvento = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/api/ciudad/${id}/eventos/${idEvento}`);
-        if (!response.ok) {
-          throw new Error(`Error ${response.status}: ${response.statusText}`);
-        }
-        const data = await response.json();
-        setEvento(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchEvento();
-  }, [id, idEvento]);
+  const fetchevent = async () => {
+    try {
+      const { data } = await api.get(`/city/${id}/events/${idEvent}`);
+      setevent(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchevent();
+}, [id, idEvent]);
+
 
   const handleRatingChange = (event, newValue) => {
     setValoracion(newValue);
-    console.log(`Valoración del evento en ciudad ${id}:`, newValue);
+    console.log(`Valoración del event en ciudad ${id}:`, newValue);
     // Aquí podrías hacer un fetch POST al backend para guardar la valoración
   };
 
-  if (loading) return <Typography>Cargando evento...</Typography>;
+  if (loading) return <Typography>Cargando event...</Typography>;
   if (error) return <Typography color="error">Error: {error}</Typography>;
-  if (!evento) return <Typography>No se encontró el evento.</Typography>;
+  if (!event) return <Typography>No se encontró el event.</Typography>;
 
 
   const postPuntuacion = async () => {
     if (token) { //compruebo primero si el usuario esta registrado
-      const response = await api.post("/puntuacion", {
-        usuario: { id: user.id },
-        articulo: { id: idEvento, type: "evento" },
-        puntuacion: valoracion
+      const response = await api.post("/rating", {
+        user: { id: user.id },
+        article: { id: idEvent, type: "food" },
+        rating: valoracion
       })
       if (response.status === 200) {
         toast.success("¡Puntuación enviada correctamente! 🎉");
@@ -78,7 +76,7 @@ const EventPage = () => {
         }}
       >
         {/*notificacion con libreria externa */}
-        <Event evento={evento} />
+        <Event event={event} />
 
         <Box
           sx={{
@@ -92,10 +90,10 @@ const EventPage = () => {
           }}
         >
           <Typography variant="h5" sx={{ mb: 2 }}>
-            ¿Qué te ha parecido el evento?
+            ¿Qué te ha parecido el event?
           </Typography>
           <Rating
-            name="evento-rating"
+            name="event-rating"
             value={valoracion}
             onChange={handleRatingChange}
             precision={0.5}
